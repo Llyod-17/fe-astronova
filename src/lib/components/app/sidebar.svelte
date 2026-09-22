@@ -4,7 +4,7 @@
 	import { cn } from '$lib/utils';
 	import { session } from '$lib/state.svelte';
 	import { initials } from '$lib/format';
-	import { Plane, X } from 'lucide-svelte';
+	import { X } from 'lucide-svelte';
 
 	let {
 		mobileOpen = false,
@@ -54,11 +54,7 @@
 
 {#snippet brand()}
 	<div class="flex items-center gap-3 px-[16px]">
-		<div
-			class="grid h-10 w-10 place-items-center rounded-[1.15rem] bg-navy-deep text-[#f5efeb] shadow-btn-navy"
-		>
-			<Plane size={18} />
-		</div>
+			<img src="/logo.jpg" alt="Astronova" class="h-14 w-14 rounded-[1.15rem] border border-border object-cover" />
 		<div>
 			<p class="font-heading text-[19px] leading-none font-medium text-navy-deep">Astronova</p>
 			<p class="mt-1 text-[10.5px] font-semibold tracking-[0.1em] text-muted-subtle uppercase">

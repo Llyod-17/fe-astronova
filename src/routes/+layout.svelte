@@ -1,17 +1,16 @@
 <script lang="ts">
 	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
 	import Sidebar from '$lib/components/app/sidebar.svelte';
 	import Hero from '$lib/components/app/hero.svelte';
 	import NotificationBell from '$lib/components/app/notification-bell.svelte';
-	import { Plane, Menu } from 'lucide-svelte';
+	import { Menu } from 'lucide-svelte';
 	import { Toaster } from 'svelte-sonner';
 
 	let { children } = $props();
 	let menuOpen = $state(false);
 </script>
 
-<svelte:head><link rel="icon" href={favicon} /></svelte:head>
+				<svelte:head><link rel="icon" href="/logo.jpg" /></svelte:head>
 
 <div class="min-h-screen bg-canvas font-sans text-foreground">
 	<Sidebar mobileOpen={menuOpen} onMobileClose={() => (menuOpen = false)} />
@@ -29,9 +28,7 @@
 					<Menu size={18} />
 				</button>
 				<div class="flex items-center gap-2">
-					<div class="grid h-8 w-8 place-items-center rounded-[0.9rem] bg-navy-deep text-[#f5efeb]">
-						<Plane size={15} />
-					</div>
+					<img src="/logo.jpg" alt="Astronova" class="h-11 w-11 rounded-[1.05rem] border border-border object-cover" />
 					<p class="font-heading text-[17px] font-medium text-navy-deep">Astronova</p>
 				</div>
 			</div>
