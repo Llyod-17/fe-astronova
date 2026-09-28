@@ -146,21 +146,21 @@
 
 <div class="grid gap-5">
 	<div class="grid gap-4 sm:grid-cols-3">
-		<Card padding="stat" class="rounded-[20px]">
-			<p class="text-[12px] font-medium text-muted-subtle">Total Anggaran</p>
-			<p class="mt-1 font-heading text-[22px] font-medium text-navy-deep">
+		<Card padding="stat">
+			<p class="text-meta font-medium text-muted-subtle">Total Anggaran</p>
+			<p class="mt-1 font-heading text-heading font-medium text-navy-deep">
 				{rupiah(totalAnggaran)}
 			</p>
 		</Card>
-		<Card padding="stat" class="rounded-[20px]">
-			<p class="text-[12px] font-medium text-muted-subtle">Realisasi Klaim</p>
-			<p class="mt-1 font-heading text-[22px] font-medium text-navy-deep">
+		<Card padding="stat">
+			<p class="text-meta font-medium text-muted-subtle">Realisasi Klaim</p>
+			<p class="mt-1 font-heading text-heading font-medium text-navy-deep">
 				{rupiah(totalRealisasi)}
 			</p>
 		</Card>
-		<Card padding="stat" class="rounded-[20px]">
-			<p class="text-[12px] font-medium text-muted-subtle">Perjalanan Dinas</p>
-			<p class="mt-1 font-heading text-[22px] font-medium text-navy-deep">
+		<Card padding="stat">
+			<p class="text-meta font-medium text-muted-subtle">Perjalanan Dinas</p>
+			<p class="mt-1 font-heading text-heading font-medium text-navy-deep">
 				{trips.length} pengajuan
 			</p>
 		</Card>
@@ -168,7 +168,7 @@
 
 	<div class="grid gap-5 xl:grid-cols-2">
 		<Card>
-			<p class="mb-4 text-[12px] font-semibold tracking-[0.06em] text-muted-subtle uppercase">
+			<p class="mb-4 text-meta font-semibold tracking-caps text-muted-subtle uppercase">
 				Anggaran per Bulan
 			</p>
 			<div class="h-[260px]">
@@ -176,7 +176,7 @@
 			</div>
 		</Card>
 		<Card>
-			<p class="mb-4 text-[12px] font-semibold tracking-[0.06em] text-muted-subtle uppercase">
+			<p class="mb-4 text-meta font-semibold tracking-caps text-muted-subtle uppercase">
 				Distribusi Kategori Biaya
 			</p>
 			<div class="h-[260px]">
@@ -187,7 +187,7 @@
 
 	<Card class="p-0">
 		<div class="flex flex-wrap items-center justify-between gap-3 px-6 pt-6">
-			<p class="text-[12px] font-semibold tracking-[0.06em] text-muted-subtle uppercase">
+			<p class="text-meta font-semibold tracking-caps text-muted-subtle uppercase">
 				Rekap Perjalanan Dinas
 			</p>
 			<div class="flex gap-2">
@@ -212,16 +212,16 @@
 			>
 				{#each trips as t (t.id)}
 					<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-						<td class="px-[12px] py-[13px] text-[12.5px] font-semibold text-navy-deep">{t.id}</td>
-						<td class="px-[12px] py-[13px] text-[13px] text-foreground">{t.tujuan}</td>
-						<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground"
+						<td class="px-[12px] py-[13px] text-body-sm font-semibold text-navy-deep">{t.id}</td>
+						<td class="px-[12px] py-[13px] text-body-sm text-foreground">{t.tujuan}</td>
+						<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground"
 							>{dateId(t.berangkat)}</td
 						>
-						<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground"
+						<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground"
 							>{dateId(t.kembali)}</td
 						>
 						<td
-							class="px-[12px] py-[13px] text-right text-[13px] font-semibold text-navy-deep tabular-nums"
+							class="px-[12px] py-[13px] text-right text-body-sm font-semibold text-navy-deep tabular-nums"
 						>
 							{rupiah(t.anggaran)}
 						</td>

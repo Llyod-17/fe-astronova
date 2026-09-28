@@ -50,17 +50,17 @@
 
 <div class="mt-5 grid gap-5 xl:grid-cols-[1fr_1.4fr]">
 	<Card class="self-start">
-		<p class="mb-4 font-heading text-[18px] font-medium text-navy-deep">Pilih Perjalanan</p>
+		<p class="mb-4 font-heading text-heading font-medium text-navy-deep">Pilih Perjalanan</p>
 		<select
 			onchange={setTrip}
-			class="w-full rounded-xl border border-input bg-surface-input px-[14px] py-[11px] text-[13px] text-navy-deep focus:border-ring focus:ring-2 focus:ring-ring/40 focus:outline-none"
+			class="w-full rounded-sm border border-input bg-surface-input px-[14px] py-[11px] text-body-sm text-navy-deep focus:border-ring focus:ring-2 focus:ring-ring/40 focus:outline-none"
 		>
 			{#each okTrips as t (t.id)}
 				<option value={t.id} selected={t.id === tripId}>{t.id} — {t.kota}</option>
 			{/each}
 		</select>
 
-		<p class="mt-6 mb-2 font-heading text-[16px] font-medium text-navy-deep">Tambah Agenda</p>
+		<p class="mt-6 mb-2 font-heading text-heading-sm font-medium text-navy-deep">Tambah Agenda</p>
 		<div class="grid gap-3">
 			<Input id="it-waktu" placeholder="Waktu — Cth: 20 Sep 09:00" />
 			<Input id="it-aktivitas" placeholder="Aktivitas" />
@@ -71,23 +71,22 @@
 
 	<Card>
 		<div class="mb-4 flex items-center justify-between">
-			<p class="font-heading text-[18px] font-medium text-navy-deep">Itinerary {tripId}</p>
-			<span
-				class="rounded-full bg-accent px-3 py-1 text-[11.5px] font-semibold text-accent-foreground"
+			<p class="font-heading text-heading font-medium text-navy-deep">Itinerary {tripId}</p>
+			<span class="rounded-xs bg-accent px-3 py-1 text-meta font-semibold text-accent-foreground"
 				>{items.length} item</span
 			>
 		</div>
 		<ol class="grid gap-2">
 			{#each items as it, idx (it.id)}
-				<li class="bg-surface flex items-center gap-3 rounded-2xl border border-border px-4 py-3">
+				<li class="bg-surface flex items-center gap-3 rounded-sm border border-border px-4 py-3">
 					<span
-						class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-navy-deep text-[12px] font-bold text-[#f5efeb]"
+						class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-navy-deep text-meta font-bold text-[#f5efeb]"
 					>
 						{idx + 1}
 					</span>
 					<div class="min-w-0 flex-1">
-						<p class="text-[13px] font-semibold text-navy-deep">{it.aktivitas}</p>
-						<p class="text-[11.5px] text-muted-subtle">
+						<p class="text-body-sm font-semibold text-navy-deep">{it.aktivitas}</p>
+						<p class="text-meta text-muted-subtle">
 							{it.waktu}{it.lokasi ? ` · ${it.lokasi}` : ''}
 						</p>
 					</div>
@@ -103,7 +102,7 @@
 			{/each}
 		</ol>
 		{#if items.length === 0}
-			<p class="py-8 text-center text-[13px] text-muted-subtle">
+			<p class="py-8 text-center text-body-sm text-muted-subtle">
 				Belum ada agenda untuk perjalanan ini.
 			</p>
 		{/if}

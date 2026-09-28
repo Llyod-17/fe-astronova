@@ -15,11 +15,11 @@
 <div class={cn('overflow-x-auto', cls)}>
 	<table class="w-full border-collapse text-left">
 		<thead>
-			<tr class="border-b border-border">
+			<tr class="border-b border-border-strong">
 				{#each headers as h (h.label)}
 					<th
 						class={cn(
-							'px-[12px] py-[12px] text-[11px] font-semibold tracking-[0.04em] whitespace-nowrap text-muted-foreground uppercase',
+							'px-3 py-2.5 text-label font-semibold whitespace-nowrap text-muted-subtle uppercase',
 							h.align === 'right' && 'text-right',
 							h.align === 'center' && 'text-center'
 						)}

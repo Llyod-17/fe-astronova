@@ -13,16 +13,16 @@
 	let { variant = 'teal', size = 'md', class: cls, children, ...rest }: Props = $props();
 
 	const base =
-		'inline-flex items-center justify-center gap-2 rounded-full font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50 disabled:pointer-events-none';
+		'inline-flex items-center justify-center gap-2 rounded-sm font-medium whitespace-nowrap transition-colors duration-150 cursor-pointer select-none active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:opacity-50 disabled:pointer-events-none';
 	const variants = {
-		teal: 'bg-secondary text-white shadow-btn-teal hover:brightness-[1.06]',
-		navy: 'bg-navy-deep text-[#f5efeb] shadow-btn-navy hover:opacity-95',
-		outline: 'bg-transparent text-primary border-[1.5px] border-primary hover:bg-primary/5',
-		ghost: 'bg-transparent text-primary hover:bg-primary/5'
+		teal: 'bg-secondary text-white hover:bg-[#4d7181]',
+		navy: 'bg-navy-deep text-[#f5efeb] hover:bg-[#2a3a4d]',
+		outline: 'bg-transparent text-primary border border-border-strong hover:bg-muted',
+		ghost: 'bg-transparent text-primary hover:bg-muted'
 	};
 	const sizes = {
-		md: 'text-[13px] px-[22px] py-[11px]',
-		sm: 'text-[12px] px-[15px] py-[8px]'
+		md: 'text-body-sm px-[18px] py-[9px]',
+		sm: 'text-meta px-[13px] py-[6px]'
 	};
 </script>
 

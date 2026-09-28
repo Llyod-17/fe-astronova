@@ -47,26 +47,26 @@
 				<tr class="border-b border-border transition-colors last:border-0 hover:bg-muted/40">
 					<td class="px-[14px] py-[14px]">
 						<span
-							class="grid h-9 w-9 place-items-center rounded-xl bg-accent text-accent-foreground"
+							class="grid h-9 w-9 place-items-center rounded-sm bg-accent text-accent-foreground"
 						>
 							{#snippet Iicon()}{@const Icon = iconBy(b.jenis)}<Icon size={16} />{/snippet}
 							{@render Iicon()}
 						</span>
 					</td>
 					<td class="px-[12px] py-[14px]">
-						<p class="text-[12.5px] font-semibold text-navy-deep">{b.jenis}</p>
-						<p class="text-[12px] text-muted-foreground">{b.detail}</p>
+						<p class="text-body-sm font-semibold text-navy-deep">{b.jenis}</p>
+						<p class="text-meta text-muted-foreground">{b.detail}</p>
 					</td>
 					<td class="px-[12px] py-[14px]"
-						><code class="rounded-md bg-muted px-2 py-1 text-[11.5px] font-medium text-primary"
+						><code class="rounded-xs bg-muted px-2 py-1 text-meta font-medium text-primary"
 							>{b.nomorRef}</code
 						></td
 					>
-					<td class="px-[12px] py-[14px] text-[12.5px] text-muted-foreground">{b.vendor}</td>
+					<td class="px-[12px] py-[14px] text-body-sm text-muted-foreground">{b.vendor}</td>
 					<td class="px-[12px] py-[14px] text-right"
 						><Badge tone="neutral">{b.trip?.id ?? '—'}</Badge></td
 					>
-					<td class="px-[12px] py-[14px] text-right text-[12.5px] font-semibold text-navy-deep"
+					<td class="px-[12px] py-[14px] text-right text-body-sm font-semibold text-navy-deep"
 						>{rupiah(b.harga)}</td
 					>
 					<td class="px-[12px] py-[14px]"><StatusBadge status={b.status} /></td>

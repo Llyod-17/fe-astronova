@@ -62,7 +62,7 @@
 
 <div class="mt-5 grid gap-5 xl:grid-cols-[1fr_1.5fr]">
 	<Card class="self-start">
-		<p class="mb-5 font-heading text-[18px] font-medium text-navy-deep">Booking Baru</p>
+		<p class="mb-5 font-heading text-heading font-medium text-navy-deep">Booking Baru</p>
 		<form
 			class="grid gap-4"
 			onsubmit={(e) => {
@@ -77,7 +77,7 @@
 						<option value={t.id}>{t.id} — {t.kota} ({dateId(t.berangkat)})</option>
 					{/each}
 				</Sel>
-				{#if errors.tripId}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.tripId}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.tripId}
 					</p>{/if}
 			</div>
@@ -89,7 +89,7 @@
 					<option value="Hotel">Hotel</option>
 					<option value="Transportasi">Transportasi</option>
 				</Sel>
-				{#if errors.jenis}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.jenis}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.jenis}
 					</p>{/if}
 			</div>
@@ -99,14 +99,14 @@
 					bind:value={f.detail}
 					placeholder="Cth: CGK → SUB — Garuda GA-312"
 				/>
-				{#if errors.detail}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.detail}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.detail}
 					</p>{/if}
 			</div>
 			<div class="grid grid-cols-2 gap-3">
 				<div>
 					<Input label="Nomor Referensi" bind:value={f.nomorRef} placeholder="Cth: GA-29018" />
-					{#if errors.nomorRef}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+					{#if errors.nomorRef}<p class="mt-1.5 text-meta font-medium text-destructive">
 							{errors.nomorRef}
 						</p>{/if}
 				</div>
@@ -117,7 +117,7 @@
 							<option value={v.nama}>{v.nama}</option>
 						{/each}
 					</Sel>
-					{#if errors.vendor}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+					{#if errors.vendor}<p class="mt-1.5 text-meta font-medium text-destructive">
 							{errors.vendor}
 						</p>{/if}
 				</div>
@@ -130,7 +130,7 @@
 					bind:value={f.harga}
 					placeholder="Cth: 1750000"
 				/>
-				{#if errors.harga}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.harga}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.harga}
 					</p>{/if}
 			</div>
@@ -153,15 +153,15 @@
 		>
 			{#each bookings as b (b.id)}
 				<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-					<td class="px-[12px] py-[13px] text-[12.5px] font-semibold text-primary">{b.id}</td>
+					<td class="px-[12px] py-[13px] text-body-sm font-semibold text-primary">{b.id}</td>
 					<td class="px-[12px] py-[13px]">
-						<p class="text-[12.5px] font-semibold text-navy-deep">{b.jenis}</p>
-						<p class="text-[11.5px] text-muted-foreground">{b.detail}</p>
+						<p class="text-body-sm font-semibold text-navy-deep">{b.jenis}</p>
+						<p class="text-meta text-muted-foreground">{b.detail}</p>
 					</td>
-					<td class="px-[12px] py-[13px] text-[11.5px] text-muted-foreground">{b.nomorRef}</td>
-					<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground">{b.vendor}</td>
+					<td class="px-[12px] py-[13px] text-meta text-muted-foreground">{b.nomorRef}</td>
+					<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground">{b.vendor}</td>
 					<td
-						class="px-[12px] py-[13px] text-right text-[12.5px] font-semibold text-navy-deep tabular-nums"
+						class="px-[12px] py-[13px] text-right text-body-sm font-semibold text-navy-deep tabular-nums"
 						>{rupiah(b.harga)}</td
 					>
 					<td class="px-[12px] py-[13px]"><StatusBadge status={b.status} /></td>

@@ -23,7 +23,7 @@
 				class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
 				><ScrollText size={16} /></span
 			>
-			<p class="font-heading text-[16px] font-medium text-navy-deep">
+			<p class="font-heading text-heading-sm font-medium text-navy-deep">
 				Log Aktivitas ({AUDIT_LOG.length} entri)
 			</p>
 		</div>
@@ -39,10 +39,10 @@
 			>
 				{#each AUDIT_LOG as e (e.id)}
 					<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-						<td class="px-[12px] py-[13px] text-[12px] whitespace-nowrap text-muted-foreground"
+						<td class="px-[12px] py-[13px] text-meta whitespace-nowrap text-muted-foreground"
 							>{dateTimeId(e.waktu)}</td
 						>
-						<td class="px-[12px] py-[13px] text-[12.5px] font-medium text-navy-deep">{e.aktor}</td>
+						<td class="px-[12px] py-[13px] text-body-sm font-medium text-navy-deep">{e.aktor}</td>
 						<td class="px-[12px] py-[13px]">
 							<Badge
 								tone={e.aksi.includes('APPROVE') || e.aksi.includes('CREATE')
@@ -55,11 +55,11 @@
 							</Badge>
 						</td>
 						<td class="px-[12px] py-[13px]"
-							><code class="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-primary"
+							><code class="rounded-xs bg-muted px-2 py-1 text-label font-medium text-primary"
 								>{e.entitas}</code
 							></td
 						>
-						<td class="px-[12px] py-[13px] text-[11.5px] text-muted-subtle">{e.ip}</td>
+						<td class="px-[12px] py-[13px] text-meta text-muted-subtle">{e.ip}</td>
 					</tr>
 				{/each}
 			</Table>

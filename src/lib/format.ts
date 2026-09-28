@@ -4,14 +4,24 @@ const idr = new Intl.NumberFormat('id-ID', {
 	maximumFractionDigits: 0
 });
 
+const num = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 });
+
+/** Locale-aware single decimal. Also drops the trailing zero, so 5 stays "5" not "5,0". */
+const dec1 = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 1 });
+
+/** Counts, quantities, anything that is not money. Indonesian thousands separator. */
+export function angka(n: number): string {
+	return num.format(n);
+}
+
 export function rupiah(n: number): string {
 	return idr.format(n);
 }
 
 export function rupiahShort(n: number): string {
-	if (n >= 1_000_000_000) return `Rp${(n / 1_000_000_000).toFixed(1).replace(/\.0$/, '')} M`;
-	if (n >= 1_000_000) return `Rp${(n / 1_000_000).toFixed(1).replace(/\.0$/, '')} Jt`;
-	if (n >= 1_000) return `Rp${(n / 1_000).toFixed(0)} Rb`;
+	if (n >= 1_000_000_000) return `Rp${dec1.format(n / 1_000_000_000)} M`;
+	if (n >= 1_000_000) return `Rp${dec1.format(n / 1_000_000)} Jt`;
+	if (n >= 1_000) return `Rp${dec1.format(n / 1_000)} Rb`;
 	return `Rp${n}`;
 }
 

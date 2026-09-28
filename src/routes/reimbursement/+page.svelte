@@ -60,7 +60,7 @@
 
 <div class="mt-5 grid gap-5 xl:grid-cols-[1fr_1.4fr]">
 	<Card class="self-start">
-		<p class="mb-5 font-heading text-[18px] font-medium text-navy-deep">Klaim Biaya</p>
+		<p class="mb-5 font-heading text-heading font-medium text-navy-deep">Klaim Biaya</p>
 		<form
 			class="grid gap-4"
 			onsubmit={(e) => {
@@ -75,7 +75,7 @@
 						<option value={t.id}>{t.id} — {t.kota}</option>
 					{/each}
 				</Sel>
-				{#if errors.tripId}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.tripId}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.tripId}
 					</p>{/if}
 			</div>
@@ -86,7 +86,7 @@
 						<option value={k.nama}>{k.nama} — {k.deskripsi}</option>
 					{/each}
 				</Sel>
-				{#if errors.kategori}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.kategori}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.kategori}
 					</p>{/if}
 			</div>
@@ -96,7 +96,7 @@
 					bind:value={f.deskripsi}
 					placeholder="Cth: Taksi dari bandara ke hotel"
 				/>
-				{#if errors.deskripsi}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.deskripsi}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.deskripsi}
 					</p>{/if}
 			</div>
@@ -108,12 +108,12 @@
 					bind:value={f.jumlah}
 					placeholder="Cth: 150000"
 				/>
-				{#if errors.jumlah}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.jumlah}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.jumlah}
 					</p>{/if}
 			</div>
 			<div>
-				<p class="mb-1.5 block text-[12.5px] font-semibold text-navy-deep">Bukti Pembayaran</p>
+				<p class="mb-1.5 block text-body-sm font-semibold text-navy-deep">Bukti Pembayaran</p>
 				<button
 					type="button"
 					onclick={() => {
@@ -122,7 +122,7 @@
 						];
 						toast.info('Bukti lampirkan (demo)', { description: `File: ${bukti}` });
 					}}
-					class="w-full rounded-xl border border-dashed border-input bg-surface-input px-4 py-6 text-[12px] font-medium text-muted-subtle transition-colors hover:border-ring hover:text-secondary"
+					class="w-full rounded-sm border border-dashed border-input bg-surface-input px-4 py-6 text-meta font-medium text-muted-subtle transition-colors hover:border-ring hover:text-secondary"
 				>
 					Lampirkan bukti — {bukti}
 				</button>
@@ -146,13 +146,13 @@
 		>
 			{#each reimbursements as r (r.id)}
 				<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-					<td class="px-[12px] py-[13px] text-[12.5px] font-semibold text-primary">{r.id}</td>
-					<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground">{r.tripId}</td>
-					<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground">{r.kategori}</td>
-					<td class="max-w-[220px] truncate px-[12px] py-[13px] text-[12.5px] text-muted-foreground"
+					<td class="px-[12px] py-[13px] text-body-sm font-semibold text-primary">{r.id}</td>
+					<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground">{r.tripId}</td>
+					<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground">{r.kategori}</td>
+					<td class="max-w-[220px] truncate px-[12px] py-[13px] text-body-sm text-muted-foreground"
 						>{r.deskripsi}</td
 					>
-					<td class="px-[12px] py-[13px] text-right text-[12.5px] font-semibold text-navy-deep"
+					<td class="px-[12px] py-[13px] text-right text-body-sm font-semibold text-navy-deep"
 						>{rupiah(r.jumlah)}</td
 					>
 					<td class="px-[12px] py-[13px]"><StatusBadge status={r.status} /></td>

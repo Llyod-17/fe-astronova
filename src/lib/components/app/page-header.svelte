@@ -15,14 +15,14 @@
 <div>
 	<div class="flex flex-wrap items-end justify-between gap-4">
 		<div>
-			<p class="text-[12px] font-semibold tracking-[0.08em] text-muted-subtle uppercase">
+			<p class="text-label font-semibold text-muted-subtle uppercase">
 				{supertitle}
 			</p>
-			<h2 class="mt-1 font-heading text-[26px] leading-tight font-medium text-navy-deep">
+			<h2 class="mt-2 font-heading text-display-lg font-medium text-navy-deep">
 				{title}
 			</h2>
 			{#if desc}
-				<p class="mt-1 max-w-2xl text-[13px] text-muted-foreground">{desc}</p>
+				<p class="mt-2 max-w-[60ch] text-body-sm text-muted-foreground">{desc}</p>
 			{/if}
 		</div>
 		{#if actions}

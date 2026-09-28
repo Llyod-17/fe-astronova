@@ -36,9 +36,9 @@
 						)}
 					></span>
 					<div class="min-w-0 flex-1">
-						<p class="text-[13.5px] font-semibold text-navy-deep">{n.judul}</p>
-						<p class="mt-0.5 text-[13px] leading-relaxed text-muted-foreground">{n.isidata}</p>
-						<p class="mt-1 text-[11px] font-medium tracking-[0.04em] text-muted-subtle uppercase">
+						<p class="text-body-sm font-semibold text-navy-deep">{n.judul}</p>
+						<p class="mt-0.5 text-body-sm leading-relaxed text-muted-foreground">{n.isidata}</p>
+						<p class="mt-1 text-label font-medium tracking-caps text-muted-subtle uppercase">
 							{n.waktu}
 						</p>
 					</div>
@@ -48,7 +48,7 @@
 		{#if notifications.length === 0}
 			<div class="flex flex-col items-center gap-2 px-6 py-14 text-muted-subtle">
 				<Inbox size={22} />
-				<p class="text-[13px] font-medium">Tidak ada notifikasi</p>
+				<p class="text-body-sm font-medium">Tidak ada notifikasi</p>
 			</div>
 		{/if}
 	</Card>

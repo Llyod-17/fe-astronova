@@ -62,8 +62,7 @@
 	{#each TABS as t (t.key)}
 		<button
 			onclick={() => (tab = t.key)}
-			class="rounded-full px-[16px] py-[8px] text-[12.5px] font-semibold transition-all {tab ===
-			t.key
+			class="rounded-sm px-3 py-1.5 text-body-sm font-semibold transition-colors {tab === t.key
 				? 'bg-navy-deep text-[#f5efeb]'
 				: 'border border-border bg-card text-primary hover:bg-muted'}"
 		>
@@ -74,7 +73,7 @@
 
 <div class="mt-4 grid gap-5 xl:grid-cols-[1fr_1.4fr]">
 	<Card class="self-start">
-		<p class="mb-4 font-heading text-[18px] font-medium text-navy-deep">Tambah Data</p>
+		<p class="mb-4 font-heading text-heading font-medium text-navy-deep">Tambah Data</p>
 		<Input
 			label={TABS.find((t) => t.key === tab)?.label}
 			bind:value={addName}
@@ -90,8 +89,8 @@
 			<Table headers={[{ label: 'Nama Departemen' }, { label: 'Jumlah Anggota', align: 'right' }]}>
 				{#each departments as d (d.id)}
 					<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-						<td class="px-[12px] py-[13px] text-[13px] font-semibold text-navy-deep">{d.nama}</td>
-						<td class="px-[12px] py-[13px] text-right text-[12.5px] text-muted-foreground"
+						<td class="px-[12px] py-[13px] text-body-sm font-semibold text-navy-deep">{d.nama}</td>
+						<td class="px-[12px] py-[13px] text-right text-body-sm text-muted-foreground"
 							>{d.count} orang</td
 						>
 					</tr>
@@ -101,8 +100,8 @@
 			<Table headers={[{ label: 'Kategori' }, { label: 'Deskripsi' }]}>
 				{#each kategori as k (k.id)}
 					<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-						<td class="px-[12px] py-[13px] text-[13px] font-semibold text-navy-deep">{k.nama}</td>
-						<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground">{k.deskripsi}</td>
+						<td class="px-[12px] py-[13px] text-body-sm font-semibold text-navy-deep">{k.nama}</td>
+						<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground">{k.deskripsi}</td>
 					</tr>
 				{/each}
 			</Table>
@@ -110,9 +109,9 @@
 			<Table headers={[{ label: 'Proyek' }, { label: 'Kode' }]}>
 				{#each proyeks as p (p.id)}
 					<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-						<td class="px-[12px] py-[13px] text-[13px] font-semibold text-navy-deep">{p.nama}</td>
+						<td class="px-[12px] py-[13px] text-body-sm font-semibold text-navy-deep">{p.nama}</td>
 						<td class="px-[12px] py-[13px]"
-							><code class="rounded-md bg-muted px-2 py-1 text-[11.5px] font-medium text-primary"
+							><code class="rounded-xs bg-muted px-2 py-1 text-meta font-medium text-primary"
 								>{p.kode}</code
 							></td
 						>
@@ -123,9 +122,9 @@
 			<Table headers={[{ label: 'Destinasi' }, { label: 'Kota' }, { label: 'Negara' }]}>
 				{#each destinasi as d (d.id)}
 					<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-						<td class="px-[12px] py-[13px] text-[13px] font-semibold text-navy-deep">{d.nama}</td>
-						<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground">{d.kota}</td>
-						<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground">{d.negara}</td>
+						<td class="px-[12px] py-[13px] text-body-sm font-semibold text-navy-deep">{d.nama}</td>
+						<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground">{d.kota}</td>
+						<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground">{d.negara}</td>
 					</tr>
 				{/each}
 			</Table>

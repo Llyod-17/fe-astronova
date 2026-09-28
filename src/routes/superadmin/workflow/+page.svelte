@@ -50,11 +50,11 @@
 						class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
 						><GitBranch size={16} /></span
 					>
-					<p class="font-heading text-[16px] font-medium text-navy-deep">{c.nama}</p>
+					<p class="font-heading text-heading-sm font-medium text-navy-deep">{c.nama}</p>
 				</div>
 				<div class="flex items-center gap-2">
 					<label
-						class="flex cursor-pointer items-center gap-2 text-[12.5px] font-semibold text-navy-deep"
+						class="flex cursor-pointer items-center gap-2 text-body-sm font-semibold text-navy-deep"
 					>
 						<input
 							type="checkbox"
@@ -70,7 +70,7 @@
 			<div class="mt-4 flex flex-wrap items-center gap-2">
 				{#each c.steps as s, j (j)}
 					<span
-						class="bg-surface rounded-full border border-border px-4 py-2 text-[12.5px] font-semibold text-navy-deep"
+						class="bg-surface rounded-sm border border-border px-3 py-1.5 text-body-sm font-semibold text-navy-deep"
 						>{s}</span
 					>
 					{#if j < c.steps.length - 1}
@@ -82,7 +82,7 @@
 	{/each}
 
 	<div
-		class="rounded-2xl border border-border bg-muted/40 px-4 py-3 text-[12.5px] text-muted-foreground"
+		class="rounded-sm border border-border bg-muted/40 px-4 py-3 text-body-sm text-muted-foreground"
 	>
 		Level persetujuan tambahan otomatis aktif bila nominal melebihi limit policy grade. Delegasi
 		approval menggantikan step atasan pada rentang tanggal tertentu.

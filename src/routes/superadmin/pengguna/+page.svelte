@@ -58,7 +58,7 @@
 
 <div class="mt-5 grid gap-5 xl:grid-cols-[1fr_1.4fr]">
 	<Card class="self-start">
-		<p class="mb-5 font-heading text-[18px] font-medium text-navy-deep">Buat Pengguna</p>
+		<p class="mb-5 font-heading text-heading font-medium text-navy-deep">Buat Pengguna</p>
 		<form
 			class="grid gap-4"
 			onsubmit={(e) => {
@@ -68,19 +68,19 @@
 		>
 			<div>
 				<Input label="Nama Lengkap" bind:value={f.nama} placeholder="Cth: Andi Pratama" />
-				{#if errors.nama}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.nama}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.nama}
 					</p>{/if}
 			</div>
 			<div>
 				<Input label="Email" bind:value={f.email} placeholder="nama@astronova.id" />
-				{#if errors.email}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.email}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.email}
 					</p>{/if}
 			</div>
 			<div>
 				<Input label="Jabatan" bind:value={f.jabatan} placeholder="Cth: Staff Finance" />
-				{#if errors.jabatan}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.jabatan}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.jabatan}
 					</p>{/if}
 			</div>
@@ -111,17 +111,17 @@
 					<td class="px-[12px] py-[13px]">
 						<div class="flex items-center gap-2.5">
 							<span
-								class="grid h-8 w-8 place-items-center rounded-full bg-accent text-[10.5px] font-bold text-accent-foreground"
+								class="grid h-8 w-8 place-items-center rounded-full bg-accent text-label font-bold text-accent-foreground"
 								>{initials(u.nama)}</span
 							>
 							<div>
-								<p class="text-[13px] font-semibold text-navy-deep">{u.nama}</p>
-								<p class="text-[11.5px] text-muted-subtle">{u.email}</p>
+								<p class="text-body-sm font-semibold text-navy-deep">{u.nama}</p>
+								<p class="text-meta text-muted-subtle">{u.email}</p>
 							</div>
 						</div>
 					</td>
-					<td class="px-[12px] py-[13px] text-right text-[12px] text-muted-foreground">{u.nik}</td>
-					<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground">{u.jabatan}</td>
+					<td class="px-[12px] py-[13px] text-right text-meta text-muted-foreground">{u.nik}</td>
+					<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground">{u.jabatan}</td>
 					<td class="px-[12px] py-[13px]"
 						><Badge tone={u.peran === 'superadmin' ? 'sky' : 'neutral'}
 							>{roleLabel[u.peran as Role]}</Badge

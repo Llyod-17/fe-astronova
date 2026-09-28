@@ -5,19 +5,25 @@
 		label?: string;
 		class?: string;
 		value?: string | number;
+		id?: string;
 		[key: string]: unknown;
 	};
 
-	let { label = '', class: cls, value = $bindable(''), ...rest }: Props = $props();
+	const uid = $props.id();
+
+	let { label = '', class: cls, value = $bindable(''), id = uid, ...rest }: Props = $props();
 </script>
 
 {#if label}
-	<label class="mb-1.5 block text-[12.5px] font-semibold text-navy-deep">{label}</label>
+	<label for={id} class="mb-1.5 block text-label font-semibold text-muted-subtle uppercase"
+		>{label}</label
+	>
 {/if}
 <input
+	{id}
 	class={cn(
-		'w-full rounded-xl border border-input bg-surface-input px-[14px] py-[11px] text-[13px] text-navy-deep placeholder:text-muted-subtle',
-		'focus:border-ring focus:ring-2 focus:ring-ring/40 focus:outline-none',
+		'w-full rounded-sm border border-input bg-surface-input px-3 py-2.5 text-body-sm text-navy-deep transition-colors placeholder:text-muted-subtle',
+		'focus:border-ring focus:ring-1 focus:ring-ring focus:outline-none',
 		cls
 	)}
 	bind:value

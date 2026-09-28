@@ -1,17 +1,8 @@
 <script lang="ts">
-	import { session, switchRole } from '$lib/state.svelte';
-	import { cn } from '$lib/utils';
+	import { session } from '$lib/state.svelte';
 	import NotificationBell from './notification-bell.svelte';
 	import { Search } from 'lucide-svelte';
 	import type { Role } from '$lib/types';
-
-	const ROLES: { key: Role; label: string }[] = [
-		{ key: 'karyawan', label: 'Karyawan' },
-		{ key: 'atasan', label: 'Atasan' },
-		{ key: 'admin-travel', label: 'Admin Travel' },
-		{ key: 'finance', label: 'Finance' },
-		{ key: 'superadmin', label: 'Super Admin' }
-	];
 
 	const SUBTITLE: Record<Role, string> = {
 		karyawan: 'Pantau pengajuan, booking, dan keuangan dinas Anda dalam satu tempat.',
@@ -24,19 +15,10 @@
 	let query = $state('');
 </script>
 
-<section
-	class="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-[#3a5068] via-[#2c4156] to-navy-deep p-[28px_32px] shadow-topbar"
->
-	<div
-		class="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-secondary/20 blur-3xl"
-	></div>
-	<div
-		class="pointer-events-none absolute right-40 -bottom-20 h-48 w-48 rounded-full bg-teal-light/10 blur-3xl"
-	></div>
-
-	<div class="relative flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
+<section class="rounded-lg border border-white/10 bg-navy-deep px-8 py-7">
+	<div class="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
 		<div>
-			<p class="text-[12px] font-semibold tracking-[0.08em] text-teal-light uppercase">
+			<p class="text-label font-semibold text-teal-light uppercase">
 				{new Date().toLocaleDateString('id-ID', {
 					weekday: 'long',
 					day: 'numeric',
@@ -44,46 +26,28 @@
 					year: 'numeric'
 				})}
 			</p>
-			<h1 class="mt-2 font-heading text-[32px] leading-[1.15] font-medium text-white">
+			<h1 class="mt-2.5 font-heading text-display-lg font-medium text-white">
 				Selamat pagi, {session.user.nama}
 			</h1>
-			<p class="mt-1 max-w-xl text-[13.5px] leading-relaxed text-[#c9d3da]">
+			<p class="mt-2 max-w-[54ch] text-body-sm text-[#b3c0ca]">
 				{SUBTITLE[session.role]}
 			</p>
 		</div>
 
-		<div class="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+		<div class="flex items-center gap-3">
 			<div
-				class="flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2.5 focus-within:border-teal-light"
+				class="flex items-center gap-2 rounded-sm border-b border-white/25 pb-2 focus-within:border-white"
 			>
-				<Search size={15} class="text-[#c9d3da]" />
+				<Search size={15} class="shrink-0 text-[#8fa4b0]" />
 				<input
 					bind:value={query}
 					type="search"
 					placeholder="Cari perjalanan, nomor dokumen…"
-					class="w-44 bg-transparent text-[13px] text-white placeholder:text-[#8fa4b0] focus:outline-none"
+					aria-label="Cari"
+					class="w-44 bg-transparent text-body-sm text-white placeholder:text-[#7c8f9b] focus:outline-none"
 				/>
 			</div>
-			<div class="flex items-center gap-2">
-				<div class="rounded-full border border-white/15 bg-white/5 p-1">
-					<NotificationBell />
-				</div>
-				<div class="flex flex-wrap gap-1.5 rounded-full border border-white/15 bg-white/5 p-1.5">
-					{#each ROLES as r (r.key)}
-						<button
-							onclick={() => switchRole(r.key)}
-							class={cn(
-								'rounded-full px-[15px] py-[7px] text-[12px] font-semibold transition-all',
-								session.role === r.key
-									? 'bg-secondary text-white shadow-btn-teal'
-									: 'text-[#c9d3da] hover:bg-white/10'
-							)}
-						>
-							{r.label}
-						</button>
-					{/each}
-				</div>
-			</div>
+			<NotificationBell />
 		</div>
 	</div>
 </section>

@@ -49,7 +49,7 @@
 
 <div class="mt-5 grid gap-5 xl:grid-cols-[1fr_1.4fr]">
 	<Card class="self-start">
-		<p class="mb-5 font-heading text-[18px] font-medium text-navy-deep">Tambah Vendor</p>
+		<p class="mb-5 font-heading text-heading font-medium text-navy-deep">Tambah Vendor</p>
 		<form
 			class="grid gap-4"
 			onsubmit={(e) => {
@@ -59,7 +59,7 @@
 		>
 			<div>
 				<Input label="Nama Vendor" bind:value={f.nama} placeholder="Cth: Singapore Airlines" />
-				{#if errors.nama}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.nama}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.nama}
 					</p>{/if}
 			</div>
@@ -71,19 +71,19 @@
 					<option value="Agen Tiket">Agen Tiket</option>
 					<option value="Transportasi Lokal">Transportasi Lokal</option>
 				</Sel>
-				{#if errors.kategori}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.kategori}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.kategori}
 					</p>{/if}
 			</div>
 			<div>
 				<Input label="Kontak (Email)" bind:value={f.kontak} placeholder="cs@vendor.co.id" />
-				{#if errors.kontak}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.kontak}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.kontak}
 					</p>{/if}
 			</div>
 			<div>
 				<Input label="Rating Awal" type="number" min="0" max="5" step="0.1" bind:value={f.rating} />
-				{#if errors.rating}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.rating}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.rating}
 					</p>{/if}
 			</div>
@@ -104,11 +104,11 @@
 		>
 			{#each vendors as v (v.id)}
 				<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-					<td class="px-[12px] py-[13px] text-[13px] font-semibold text-navy-deep">{v.nama}</td>
+					<td class="px-[12px] py-[13px] text-body-sm font-semibold text-navy-deep">{v.nama}</td>
 					<td class="px-[12px] py-[13px]"><Badge tone="neutral">{v.kategori}</Badge></td>
-					<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground">{v.kontak}</td>
+					<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground">{v.kontak}</td>
 					<td class="px-[12px] py-[13px] text-right">
-						<span class="text-[12.5px] font-semibold text-navy-deep">★ {v.rating.toFixed(1)}</span>
+						<span class="text-body-sm font-semibold text-navy-deep">★ {v.rating.toFixed(1)}</span>
 					</td>
 				</tr>
 			{/each}

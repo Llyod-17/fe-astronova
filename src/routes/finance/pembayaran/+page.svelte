@@ -33,13 +33,13 @@
 		>
 			{#each queue as r (r.id)}
 				<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-					<td class="px-[12px] py-[13px] text-[12.5px] font-semibold text-primary">{r.id}</td>
-					<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground">{r.tripId}</td>
-					<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground"
+					<td class="px-[12px] py-[13px] text-body-sm font-semibold text-primary">{r.id}</td>
+					<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground">{r.tripId}</td>
+					<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground"
 						>{r.kategori} — {r.deskripsi}</td
 					>
 					<td
-						class="px-[12px] py-[13px] text-right text-[12.5px] font-semibold text-navy-deep tabular-nums"
+						class="px-[12px] py-[13px] text-right text-body-sm font-semibold text-navy-deep tabular-nums"
 						>{rupiah(r.jumlah)}</td
 					>
 					<td class="px-[12px] py-[13px]">
@@ -53,22 +53,22 @@
 			{/each}
 		</Table>
 		{#if queue.length === 0}
-			<p class="py-8 text-center text-[13px] text-muted-subtle">Tidak ada pembayaran tertunda.</p>
+			<p class="py-8 text-center text-body-sm text-muted-subtle">Tidak ada pembayaran tertunda.</p>
 		{/if}
 	</Card>
 
 	<Card class="self-start">
-		<p class="font-heading text-[18px] font-medium text-navy-deep">Ringkasan Antrian</p>
-		<p class="mt-1 text-[12.5px] text-muted-foreground">
+		<p class="font-heading text-heading font-medium text-navy-deep">Ringkasan Antrian</p>
+		<p class="mt-1 text-body-sm text-muted-foreground">
 			{queue.length} klaim menunggu transfer ke rekening karyawan.
 		</p>
-		<div class="mt-4 rounded-2xl bg-gradient-to-br from-[#eef4f8] to-[#f7fafc] px-4 py-4">
-			<p class="text-[12px] font-medium text-muted-subtle">Total Pembayaran</p>
-			<p class="mt-1 font-heading text-[26px] leading-tight font-medium text-navy-deep">
+		<div class="mt-4 rounded-sm bg-gradient-to-br from-[#eef4f8] to-[#f7fafc] px-4 py-4">
+			<p class="text-meta font-medium text-muted-subtle">Total Pembayaran</p>
+			<p class="mt-1 font-heading text-display leading-tight font-medium text-navy-deep">
 				{rupiah(total)}
 			</p>
 		</div>
-		<div class="mt-3 rounded-2xl bg-ok-bg/40 px-4 py-3 text-[12.5px] font-medium text-ok-fg">
+		<div class="mt-3 rounded-sm bg-ok-bg/40 px-4 py-3 text-body-sm font-medium text-ok-fg">
 			Semua klaim berstatus <StatusBadge status="siap_bayar" /> tercatat dalam ledger pembayaran.
 		</div>
 	</Card>

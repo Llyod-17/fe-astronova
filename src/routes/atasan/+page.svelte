@@ -54,7 +54,7 @@
 <div class="mt-5 grid gap-5 xl:grid-cols-[1.6fr_1fr]">
 	<Card>
 		<div class="mb-4 flex items-center justify-between">
-			<p class="font-heading text-[18px] font-medium text-navy-deep">Antrian Persetujuan</p>
+			<p class="font-heading text-heading font-medium text-navy-deep">Antrian Persetujuan</p>
 			<StatusBadge status="menunggu_persetujuan" />
 		</div>
 		<Table
@@ -69,23 +69,21 @@
 		>
 			{#each pendingQueue as t (t.id)}
 				<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-					<td class="px-[12px] py-[13px] text-[12.5px] font-semibold text-primary">{t.id}</td>
+					<td class="px-[12px] py-[13px] text-body-sm font-semibold text-primary">{t.id}</td>
 					<td class="px-[12px] py-[13px]">
 						<div class="flex items-center gap-2">
 							<span
-								class="grid h-7 w-7 place-items-center rounded-full bg-accent text-[10.5px] font-bold text-accent-foreground"
+								class="grid h-7 w-7 place-items-center rounded-full bg-accent text-label font-bold text-accent-foreground"
 							>
 								{initials('Ahmad Fauzi')}
 							</span>
-							<span class="text-[12.5px] font-medium text-navy-deep">Ahmad Fauzi</span>
+							<span class="text-body-sm font-medium text-navy-deep">Ahmad Fauzi</span>
 						</div>
 					</td>
 					<td class="px-[12px] py-[13px]"><RouteCell from="CGK" to={t.kota} /></td>
-					<td class="px-[12px] py-[13px] text-[12px] text-muted-foreground"
-						>{dateId(t.berangkat)}</td
-					>
+					<td class="px-[12px] py-[13px] text-meta text-muted-foreground">{dateId(t.berangkat)}</td>
 					<td
-						class="px-[12px] py-[13px] text-right text-[12.5px] font-semibold text-navy-deep tabular-nums"
+						class="px-[12px] py-[13px] text-right text-body-sm font-semibold text-navy-deep tabular-nums"
 						>{rupiah(t.anggaran)}</td
 					>
 					<td class="px-[12px] py-[13px]">
@@ -100,58 +98,58 @@
 			{/each}
 		</Table>
 		{#if pendingQueue.length === 0}
-			<p class="py-8 text-center text-[13px] text-muted-subtle">
+			<p class="py-8 text-center text-body-sm text-muted-subtle">
 				Semua pengajuan sudah diproses. Mantap!
 			</p>
 		{/if}
 	</Card>
 
 	<Card>
-		<p class="mb-4 font-heading text-[18px] font-medium text-navy-deep">Blok Cepat</p>
+		<p class="mb-4 font-heading text-heading font-medium text-navy-deep">Blok Cepat</p>
 		<div class="grid gap-2.5">
 			<a
 				href="/atasan/approval"
-				class="bg-surface flex items-center gap-3 rounded-2xl border border-border px-4 py-3.5 text-[13px] font-semibold text-navy-deep transition-colors hover:border-ring"
+				class="bg-surface flex items-center gap-3 rounded-sm border border-border px-4 py-3.5 text-body-sm font-semibold text-navy-deep transition-colors hover:border-ring"
 			>
 				<span
 					class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
 					><ClipboardList size={16} /></span
 				>
 				Approval & Delegasi
-				<span class="ml-auto text-[11.5px] font-medium text-muted-subtle"
+				<span class="ml-auto text-meta font-medium text-muted-subtle"
 					>{pendingQueue.length} antrean</span
 				>
 			</a>
 			<a
 				href="/atasan/perjalanan-tim"
-				class="bg-surface flex items-center gap-3 rounded-2xl border border-border px-4 py-3.5 text-[13px] font-semibold text-navy-deep transition-colors hover:border-ring"
+				class="bg-surface flex items-center gap-3 rounded-sm border border-border px-4 py-3.5 text-body-sm font-semibold text-navy-deep transition-colors hover:border-ring"
 			>
 				<span
 					class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
 					><Users size={16} /></span
 				>
 				Perjalanan Tim
-				<span class="ml-auto text-[11.5px] font-medium text-muted-subtle">{totalReguler} trip</span>
+				<span class="ml-auto text-meta font-medium text-muted-subtle">{totalReguler} trip</span>
 			</a>
 			<a
 				href="/atasan/laporan"
-				class="bg-surface flex items-center gap-3 rounded-2xl border border-border px-4 py-3.5 text-[13px] font-semibold text-navy-deep transition-colors hover:border-ring"
+				class="bg-surface flex items-center gap-3 rounded-sm border border-border px-4 py-3.5 text-body-sm font-semibold text-navy-deep transition-colors hover:border-ring"
 			>
 				<span
 					class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
 					><UserCog size={16} /></span
 				>
 				Delegasi Approval
-				<span class="ml-auto text-[11.5px] font-medium text-muted-subtle">Atur wakil</span>
+				<span class="ml-auto text-meta font-medium text-muted-subtle">Atur wakil</span>
 			</a>
 		</div>
 		<div
-			class="mt-4 rounded-2xl border border-border bg-gradient-to-br from-[#eef4f8] to-[#f7fafc] px-4 py-4"
+			class="mt-4 rounded-sm border border-border bg-gradient-to-br from-[#eef4f8] to-[#f7fafc] px-4 py-4"
 		>
-			<p class="text-[12px] font-semibold tracking-[0.05em] text-muted-subtle uppercase">
+			<p class="text-meta font-semibold tracking-caps text-muted-subtle uppercase">
 				Aturan Persetujuan
 			</p>
-			<ul class="mt-2 space-y-1.5 text-[12.5px] text-muted-foreground">
+			<ul class="mt-2 space-y-1.5 text-body-sm text-muted-foreground">
 				<li>• Persetujuan tunggal (1 level) untuk ≤ Rp 10 Jt</li>
 				<li>• Di atas Rp 10 Jt memerlukan level ke-2</li>
 				<li>• Delegasi aktif selama Anda tidak di tempat</li>

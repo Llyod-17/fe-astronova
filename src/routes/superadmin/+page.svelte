@@ -29,7 +29,7 @@
 <div class="mt-5 grid gap-5 xl:grid-cols-[1.6fr_1fr]">
 	<Card padding="none">
 		<div class="flex items-center justify-between px-6 pt-6">
-			<p class="font-heading text-[18px] font-medium text-navy-deep">Kesehatan Sistem</p>
+			<p class="font-heading text-heading font-medium text-navy-deep">Kesehatan Sistem</p>
 			<Badge tone="ok">Semua modul OK</Badge>
 		</div>
 		<div class="px-6 pt-4 pb-6">
@@ -42,50 +42,47 @@
 				]}
 			>
 				<tr class="border-b border-border last:border-0">
-					<td class="px-[12px] py-[13px] text-[13px] font-semibold text-navy-deep"
+					<td class="px-[12px] py-[13px] text-body-sm font-semibold text-navy-deep"
 						>Approval Engine</td
 					>
 					<td class="px-[12px] py-[13px]"><Badge tone="ok">Operasional</Badge></td>
-					<td class="px-[12px] py-[13px] text-right text-[12.5px] text-muted-foreground">24 ms</td>
-					<td class="px-[12px] py-[13px] text-right text-[12.5px] text-muted-foreground">0 error</td
-					>
+					<td class="px-[12px] py-[13px] text-right text-body-sm text-muted-foreground">24 ms</td>
+					<td class="px-[12px] py-[13px] text-right text-body-sm text-muted-foreground">0 error</td>
 				</tr>
 				<tr class="border-b border-border last:border-0">
-					<td class="px-[12px] py-[13px] text-[13px] font-semibold text-navy-deep"
+					<td class="px-[12px] py-[13px] text-body-sm font-semibold text-navy-deep"
 						>Booking & Vendor Gateway</td
 					>
 					<td class="px-[12px] py-[13px]"><Badge tone="ok">Operasional</Badge></td>
-					<td class="px-[12px] py-[13px] text-right text-[12.5px] text-muted-foreground">118 ms</td>
-					<td class="px-[12px] py-[13px] text-right text-[12.5px] text-muted-foreground">2 retry</td
-					>
+					<td class="px-[12px] py-[13px] text-right text-body-sm text-muted-foreground">118 ms</td>
+					<td class="px-[12px] py-[13px] text-right text-body-sm text-muted-foreground">2 retry</td>
 				</tr>
 				<tr class="border-b border-border last:border-0">
-					<td class="px-[12px] py-[13px] text-[13px] font-semibold text-navy-deep"
+					<td class="px-[12px] py-[13px] text-body-sm font-semibold text-navy-deep"
 						>Finance & Settlement</td
 					>
 					<td class="px-[12px] py-[13px]"><Badge tone="ok">Operasional</Badge></td>
-					<td class="px-[12px] py-[13px] text-right text-[12.5px] text-muted-foreground">31 ms</td>
-					<td class="px-[12px] py-[13px] text-right text-[12.5px] text-muted-foreground">0 error</td
-					>
+					<td class="px-[12px] py-[13px] text-right text-body-sm text-muted-foreground">31 ms</td>
+					<td class="px-[12px] py-[13px] text-right text-body-sm text-muted-foreground">0 error</td>
 				</tr>
 				<tr>
-					<td class="px-[12px] py-[13px] text-[13px] font-semibold text-navy-deep"
+					<td class="px-[12px] py-[13px] text-body-sm font-semibold text-navy-deep"
 						>Integrasi Direktorat & Notifikasi</td
 					>
 					<td class="px-[12px] py-[13px]"><Badge tone="pend">Koneksi email normal</Badge></td>
-					<td class="px-[12px] py-[13px] text-right text-[12.5px] text-muted-foreground">45 ms</td>
-					<td class="px-[12px] py-[13px] text-right text-[12.5px] text-muted-foreground">1 info</td>
+					<td class="px-[12px] py-[13px] text-right text-body-sm text-muted-foreground">45 ms</td>
+					<td class="px-[12px] py-[13px] text-right text-body-sm text-muted-foreground">1 info</td>
 				</tr>
 			</Table>
 		</div>
 	</Card>
 
 	<Card>
-		<p class="mb-4 font-heading text-[18px] font-medium text-navy-deep">Administrasi</p>
+		<p class="mb-4 font-heading text-heading font-medium text-navy-deep">Administrasi</p>
 		<div class="grid gap-2.5">
 			<a
 				href="/superadmin/master-data"
-				class="bg-surface flex items-center gap-3 rounded-2xl border border-border px-4 py-3.5 text-[13px] font-semibold text-navy-deep transition-colors hover:border-ring"
+				class="bg-surface flex items-center gap-3 rounded-sm border border-border px-4 py-3.5 text-body-sm font-semibold text-navy-deep transition-colors hover:border-ring"
 			>
 				<span
 					class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
@@ -94,7 +91,7 @@
 			</a>
 			<a
 				href="/superadmin/pengguna"
-				class="bg-surface flex items-center gap-3 rounded-2xl border border-border px-4 py-3.5 text-[13px] font-semibold text-navy-deep transition-colors hover:border-ring"
+				class="bg-surface flex items-center gap-3 rounded-sm border border-border px-4 py-3.5 text-body-sm font-semibold text-navy-deep transition-colors hover:border-ring"
 			>
 				<span
 					class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
@@ -103,20 +100,18 @@
 			</a>
 			<a
 				href="/superadmin/travel-policy"
-				class="bg-surface flex items-center gap-3 rounded-2xl border border-border px-4 py-3.5 text-[13px] font-semibold text-navy-deep transition-colors hover:border-ring"
+				class="bg-surface flex items-center gap-3 rounded-sm border border-border px-4 py-3.5 text-body-sm font-semibold text-navy-deep transition-colors hover:border-ring"
 			>
 				<span
 					class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
 					><ShieldCheck size={16} /></span
 				>
 				Travel Policy
-				<span class="ml-auto text-[11.5px] font-medium text-muted-subtle"
-					>{policies.length} grade</span
-				>
+				<span class="ml-auto text-meta font-medium text-muted-subtle">{policies.length} grade</span>
 			</a>
 			<a
 				href="/superadmin/workflow"
-				class="bg-surface flex items-center gap-3 rounded-2xl border border-border px-4 py-3.5 text-[13px] font-semibold text-navy-deep transition-colors hover:border-ring"
+				class="bg-surface flex items-center gap-3 rounded-sm border border-border px-4 py-3.5 text-body-sm font-semibold text-navy-deep transition-colors hover:border-ring"
 			>
 				<span
 					class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
@@ -125,7 +120,7 @@
 			</a>
 			<a
 				href="/superadmin/integrasi"
-				class="bg-surface flex items-center gap-3 rounded-2xl border border-border px-4 py-3.5 text-[13px] font-semibold text-navy-deep transition-colors hover:border-ring"
+				class="bg-surface flex items-center gap-3 rounded-sm border border-border px-4 py-3.5 text-body-sm font-semibold text-navy-deep transition-colors hover:border-ring"
 			>
 				<span
 					class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
@@ -134,7 +129,7 @@
 			</a>
 			<a
 				href="/superadmin/audit-log"
-				class="bg-surface flex items-center gap-3 rounded-2xl border border-border px-4 py-3.5 text-[13px] font-semibold text-navy-deep transition-colors hover:border-ring"
+				class="bg-surface flex items-center gap-3 rounded-sm border border-border px-4 py-3.5 text-body-sm font-semibold text-navy-deep transition-colors hover:border-ring"
 			>
 				<span
 					class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
@@ -143,8 +138,8 @@
 			</a>
 		</div>
 
-		<div class="mt-4 rounded-2xl bg-gradient-to-br from-[#eef4f8] to-[#f7fafc] px-4 py-4">
-			<p class="text-[12px] font-semibold tracking-[0.05em] text-muted-subtle uppercase">
+		<div class="mt-4 rounded-sm bg-gradient-to-br from-[#eef4f8] to-[#f7fafc] px-4 py-4">
+			<p class="text-meta font-semibold tracking-caps text-muted-subtle uppercase">
 				Limit per Policy
 			</p>
 			<input
@@ -156,7 +151,7 @@
 				class="mt-2 w-full accent-secondary"
 				disabled
 			/>
-			<p class="mt-1 text-[12px] text-muted-subtle">
+			<p class="mt-1 text-meta text-muted-subtle">
 				Penggunaan limit tertinggi {rupiah(15000000)} (grade Direktur) — 74%
 			</p>
 		</div>

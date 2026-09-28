@@ -67,13 +67,13 @@
 						class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
 						><Plug size={16} /></span
 					>
-					<p class="font-heading text-[14.5px] leading-snug font-medium text-navy-deep">{a.nama}</p>
+					<p class="font-heading text-body-sm leading-snug font-medium text-navy-deep">{a.nama}</p>
 				</div>
 				<Badge tone={a.status === 'Aktif' ? 'ok' : 'pend'}>{a.status}</Badge>
 			</div>
-			<p class="mt-2 text-[12.5px] leading-relaxed text-muted-foreground">{a.desc}</p>
+			<p class="mt-2 text-body-sm leading-relaxed text-muted-foreground">{a.desc}</p>
 			<div class="mt-4 flex items-center justify-between">
-				<span class="text-[11.5px] text-muted-subtle"
+				<span class="text-meta text-muted-subtle"
 					>{a.versi !== '—' ? `Versi ${a.versi}` : 'Tanpa versi'}</span
 				>
 				<Button size="sm" variant="outline" onclick={() => ujiApi(a.nama)}>Uji Koneksi</Button>
@@ -83,7 +83,7 @@
 </div>
 
 <div
-	class="mt-4 rounded-2xl border border-border bg-muted/40 px-4 py-3 text-[12.5px] text-muted-foreground"
+	class="mt-4 rounded-sm border border-border bg-muted/40 px-4 py-3 text-body-sm text-muted-foreground"
 >
 	Semua request ke Direktorat terenkripsi TLS 1.2+. Log request disimpan di audit log untuk
 	kepatuhan.

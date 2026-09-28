@@ -64,21 +64,21 @@
 		>
 			{#each rows as r (r.id)}
 				<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-					<td class="px-[12px] py-[14px] text-[12.5px] font-semibold text-primary">{r.id}</td>
+					<td class="px-[12px] py-[14px] text-body-sm font-semibold text-primary">{r.id}</td>
 					<td class="px-[12px] py-[14px]">
-						<p class="text-[12.5px] font-medium text-navy-deep">{r.tripId}</p>
-						<p class="text-[12px] text-muted-foreground">{r.t?.kota ?? '—'}</p>
+						<p class="text-body-sm font-medium text-navy-deep">{r.tripId}</p>
+						<p class="text-meta text-muted-foreground">{r.t?.kota ?? '—'}</p>
 					</td>
-					<td class="px-[12px] py-[14px] text-right text-[12.5px] text-muted-foreground"
+					<td class="px-[12px] py-[14px] text-right text-body-sm text-muted-foreground"
 						>{rupiah(r.um)}</td
 					>
-					<td class="px-[12px] py-[14px] text-right text-[12.5px] text-muted-foreground"
+					<td class="px-[12px] py-[14px] text-right text-body-sm text-muted-foreground"
 						>{rupiah(r.real)}</td
 					>
-					<td class="px-[12px] py-[14px] text-right text-[12.5px] font-semibold text-navy-deep"
+					<td class="px-[12px] py-[14px] text-right text-body-sm font-semibold text-navy-deep"
 						>{r.selisih < 0 ? '−' : ''}{rupiah(Math.abs(r.selisih))}</td
 					>
-					<td class="px-[12px] py-[14px] text-[12.5px] text-muted-foreground">
+					<td class="px-[12px] py-[14px] text-body-sm text-muted-foreground">
 						{#if r.jenis === 'kurang_bayar'}Tambahan bayar
 						{:else if r.jenis === 'lebih_bayar'}Kembalikan sisa
 						{:else}Impas{/if}

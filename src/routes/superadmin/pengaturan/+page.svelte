@@ -59,11 +59,11 @@
 
 <div class="mt-5 grid gap-5 xl:grid-cols-2">
 	<Card>
-		<p class="mb-4 font-heading text-[18px] font-medium text-navy-deep">Preferensi Sistem</p>
+		<p class="mb-4 font-heading text-heading font-medium text-navy-deep">Preferensi Sistem</p>
 		<div class="grid gap-2.5">
 			{#each OPTIONS as item (item.key)}
 				<label
-					class="flex cursor-pointer items-start gap-3 rounded-xl border border-border bg-surface-input px-4 py-3.5"
+					class="flex cursor-pointer items-start gap-3 rounded-sm border border-border bg-surface-input px-4 py-3.5"
 				>
 					<input
 						type="checkbox"
@@ -72,8 +72,8 @@
 						class="mt-0.5 h-4 w-4 accent-secondary"
 					/>
 					<span>
-						<span class="block text-[13px] font-semibold text-navy-deep">{item.label}</span>
-						<span class="block text-[12px] text-muted-foreground">{item.desc}</span>
+						<span class="block text-body-sm font-semibold text-navy-deep">{item.label}</span>
+						<span class="block text-meta text-muted-foreground">{item.desc}</span>
 					</span>
 				</label>
 			{/each}
@@ -84,8 +84,8 @@
 	</Card>
 
 	<Card class="self-start">
-		<p class="mb-3 font-heading text-[18px] font-medium text-navy-deep">Versi Sistem</p>
-		<div class="grid gap-2 text-[12.5px] text-muted-foreground">
+		<p class="mb-3 font-heading text-heading font-medium text-navy-deep">Versi Sistem</p>
+		<div class="grid gap-2 text-body-sm text-muted-foreground">
 			<div class="flex justify-between border-b border-border pb-2">
 				<span>Platform</span><span class="font-semibold text-navy-deep">Astronova Travel</span>
 			</div>
@@ -99,7 +99,7 @@
 				<span>Mode</span><span class="font-semibold text-navy-deep">Prototype (mock data)</span>
 			</div>
 		</div>
-		<div class="mt-4 rounded-2xl bg-muted/60 px-4 py-3 text-[12px] text-muted-subtle">
+		<div class="mt-4 rounded-sm bg-muted/60 px-4 py-3 text-meta text-muted-subtle">
 			Rilis ini adalah pratinjau antarmuka. Integrasi backend sesuai spesifikasi API Direktorat
 			belum diaktifkan.
 		</div>

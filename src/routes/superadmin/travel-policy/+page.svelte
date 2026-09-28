@@ -43,7 +43,7 @@
 					class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
 					><ShieldCheck size={16} /></span
 				>
-				<p class="font-heading text-[16px] font-medium text-navy-deep">Limit per Grade</p>
+				<p class="font-heading text-heading-sm font-medium text-navy-deep">Limit per Grade</p>
 			</div>
 			<Badge tone="sky">Otomatis diberlakukan saat pengajuan</Badge>
 		</div>
@@ -59,10 +59,9 @@
 			>
 				{#each policies as p (p.id)}
 					<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-						<td class="px-[12px] py-[14px] text-[12.5px] text-muted-foreground"
-							>{p.latarbelakang}</td
+						<td class="px-[12px] py-[14px] text-body-sm text-muted-foreground">{p.latarbelakang}</td
 						>
-						<td class="px-[12px] py-[14px] text-[13px] font-semibold text-navy-deep">{p.grade}</td>
+						<td class="px-[12px] py-[14px] text-body-sm font-semibold text-navy-deep">{p.grade}</td>
 						<td class="px-[12px] py-[14px] text-right">
 							{#if simpanKey === p.id}
 								<span class="inline-flex items-center gap-2">
@@ -77,12 +76,12 @@
 									<Button size="sm" onclick={() => simpan(p.id)}>Simpan</Button>
 								</span>
 							{:else}
-								<span class="text-[13px] font-semibold text-navy-deep tabular-nums"
+								<span class="text-body-sm font-semibold text-navy-deep tabular-nums"
 									>{rupiah(p.limit)}</span
 								>
 							{/if}
 						</td>
-						<td class="px-[12px] py-[14px] text-[12.5px] text-muted-foreground">{p.kelas}</td>
+						<td class="px-[12px] py-[14px] text-body-sm text-muted-foreground">{p.kelas}</td>
 						<td class="px-[12px] py-[14px] text-right">
 							<Button
 								size="sm"
@@ -98,16 +97,16 @@
 		</div>
 	</Card>
 
-	<div class="mt-4 grid gap-4 text-[12.5px] text-muted-foreground sm:grid-cols-3">
-		<div class="rounded-2xl border border-border bg-muted/40 px-4 py-3">
+	<div class="mt-4 grid gap-4 text-body-sm text-muted-foreground sm:grid-cols-3">
+		<div class="rounded-sm border border-border bg-muted/40 px-4 py-3">
 			<p class="font-semibold text-navy-deep">1. Atas approval</p>
 			<p class="mt-0.5">Di atas limit memerlukan persetujuan level ke-2.</p>
 		</div>
-		<div class="rounded-2xl border border-border bg-muted/40 px-4 py-3">
+		<div class="rounded-sm border border-border bg-muted/40 px-4 py-3">
 			<p class="font-semibold text-navy-deep">2. Kelas perjalanan</p>
 			<p class="mt-0.5">Kelas pesawat dibatasi sesuai grade.</p>
 		</div>
-		<div class="rounded-2xl border border-border bg-muted/40 px-4 py-3">
+		<div class="rounded-sm border border-border bg-muted/40 px-4 py-3">
 			<p class="font-semibold text-navy-deep">3. Auditor</p>
 			<p class="mt-0.5">Perubahan policy tercatat di audit log.</p>
 		</div>

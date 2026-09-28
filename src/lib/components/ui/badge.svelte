@@ -23,7 +23,7 @@
 
 <span
 	class={cn(
-		'inline-flex items-center gap-1 rounded-full px-[11px] py-[4px] text-[11px] font-semibold tracking-[0.02em] whitespace-nowrap',
+		'inline-flex items-center gap-1 rounded-xs px-2 py-[3px] text-label font-semibold whitespace-nowrap',
 		tones[tone],
 		cls
 	)}

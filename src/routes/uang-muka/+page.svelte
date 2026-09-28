@@ -50,7 +50,7 @@
 
 <div class="mt-5 grid gap-5 xl:grid-cols-[1fr_1.4fr]">
 	<Card class="self-start">
-		<p class="mb-5 font-heading text-[18px] font-medium text-navy-deep">Ajukan Uang Muka</p>
+		<p class="mb-5 font-heading text-heading font-medium text-navy-deep">Ajukan Uang Muka</p>
 		<form
 			class="grid gap-4"
 			onsubmit={(e) => {
@@ -65,7 +65,7 @@
 						<option value={t.id}>{t.id} — {t.kota} ({dateId(t.berangkat)})</option>
 					{/each}
 				</Sel>
-				{#if errors.tripId}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.tripId}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.tripId}
 					</p>{/if}
 			</div>
@@ -77,7 +77,7 @@
 					bind:value={f.jumlah}
 					placeholder="Cth: 3000000"
 				/>
-				{#if errors.jumlah}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errors.jumlah}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errors.jumlah}
 					</p>{/if}
 			</div>
@@ -100,16 +100,15 @@
 		>
 			{#each dana as d (d.id)}
 				<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-					<td class="px-[12px] py-[13px] text-[12.5px] font-semibold text-primary">{d.id}</td>
-					<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground">{d.tripId}</td>
-					<td class="px-[12px] py-[13px] text-right text-[12.5px] text-muted-foreground"
+					<td class="px-[12px] py-[13px] text-body-sm font-semibold text-primary">{d.id}</td>
+					<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground">{d.tripId}</td>
+					<td class="px-[12px] py-[13px] text-right text-body-sm text-muted-foreground"
 						>{rupiah(d.diajukan)}</td
 					>
-					<td class="px-[12px] py-[13px] text-right text-[12.5px] font-semibold text-navy-deep"
+					<td class="px-[12px] py-[13px] text-right text-body-sm font-semibold text-navy-deep"
 						>{d.disetujui > 0 ? rupiah(d.disetujui) : '—'}</td
 					>
-					<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground"
-						>{dateId(d.tanggal)}</td
+					<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground">{dateId(d.tanggal)}</td
 					>
 					<td class="px-[12px] py-[13px]"><StatusBadge status={d.status} /></td>
 				</tr>

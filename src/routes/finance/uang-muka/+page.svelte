@@ -35,20 +35,19 @@
 		>
 			{#each rows as d (d.id)}
 				<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-					<td class="px-[12px] py-[13px] text-[12.5px] font-semibold text-primary">{d.id}</td>
-					<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground"
+					<td class="px-[12px] py-[13px] text-body-sm font-semibold text-primary">{d.id}</td>
+					<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground"
 						>{d.tripId} · {d.t?.kota ?? '—'}</td
 					>
-					<td class="px-[12px] py-[13px] text-[12.5px] font-medium text-navy-deep">Ahmad Fauzi</td>
+					<td class="px-[12px] py-[13px] text-body-sm font-medium text-navy-deep">Ahmad Fauzi</td>
 					<td
-						class="px-[12px] py-[13px] text-right text-[12.5px] font-semibold text-navy-deep tabular-nums"
+						class="px-[12px] py-[13px] text-right text-body-sm font-semibold text-navy-deep tabular-nums"
 						>{rupiah(d.diajukan)}</td
 					>
-					<td
-						class="px-[12px] py-[13px] text-right text-[12.5px] text-muted-foreground tabular-nums"
+					<td class="px-[12px] py-[13px] text-right text-body-sm text-muted-foreground tabular-nums"
 						>{d.disetujui > 0 ? rupiah(d.disetujui) : '—'}</td
 					>
-					<td class="px-[12px] py-[13px] text-[12px] text-muted-foreground">{dateId(d.tanggal)}</td>
+					<td class="px-[12px] py-[13px] text-meta text-muted-foreground">{dateId(d.tanggal)}</td>
 					<td class="px-[12px] py-[13px]"><StatusBadge status={d.status} /></td>
 					<td class="px-[12px] py-[13px]">
 						<div class="flex justify-end">
@@ -57,7 +56,7 @@
 									><Wallet size={13} /> Cairkan</Button
 								>
 							{:else}
-								<span class="text-[11.5px] text-muted-subtle">Terkirim</span>
+								<span class="text-meta text-muted-subtle">Terkirim</span>
 							{/if}
 						</div>
 					</td>

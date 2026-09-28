@@ -53,17 +53,17 @@
 		>
 			{#each rows as t (t.id)}
 				<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-					<td class="px-[12px] py-[13px] text-[12.5px] font-semibold text-primary">{t.id}</td>
-					<td class="px-[12px] py-[13px] text-[12.5px] font-medium text-navy-deep">Ahmad Fauzi</td>
+					<td class="px-[12px] py-[13px] text-body-sm font-semibold text-primary">{t.id}</td>
+					<td class="px-[12px] py-[13px] text-body-sm font-medium text-navy-deep">Ahmad Fauzi</td>
 					<td class="px-[12px] py-[13px]"><RouteCell from="CGK" to={t.kota} /></td>
-					<td class="px-[12px] py-[13px] text-[12px] text-muted-foreground"
+					<td class="px-[12px] py-[13px] text-meta text-muted-foreground"
 						>{dateId(t.berangkat)} — {dateId(t.kembali)}</td
 					>
-					<td class="max-w-[200px] truncate px-[12px] py-[13px] text-[12.5px] text-muted-foreground"
+					<td class="max-w-[200px] truncate px-[12px] py-[13px] text-body-sm text-muted-foreground"
 						>{t.keperluan}</td
 					>
 					<td
-						class="px-[12px] py-[13px] text-right text-[12.5px] font-semibold text-navy-deep tabular-nums"
+						class="px-[12px] py-[13px] text-right text-body-sm font-semibold text-navy-deep tabular-nums"
 						>{rupiah(t.anggaran)}</td
 					>
 					<td class="px-[12px] py-[13px]"><StatusBadge status={t.status} /></td>
@@ -77,7 +77,7 @@
 									><CircleX size={13} /> Tolak</Button
 								>
 							{:else}
-								<span class="text-[11.5px] text-muted-subtle">—</span>
+								<span class="text-meta text-muted-subtle">—</span>
 							{/if}
 						</div>
 					</td>
@@ -85,7 +85,7 @@
 			{/each}
 		</Table>
 		{#if rows.length === 0}
-			<p class="py-8 text-center text-[13px] text-muted-subtle">Tidak ada data pada filter ini.</p>
+			<p class="py-8 text-center text-body-sm text-muted-subtle">Tidak ada data pada filter ini.</p>
 		{/if}
 	</Card>
 </div>

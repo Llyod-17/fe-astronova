@@ -12,7 +12,7 @@
 	<button
 		onclick={() => (value = '')}
 		class={cn(
-			'rounded-full px-[17px] py-[8px] text-[12.5px] font-semibold transition-all',
+			'rounded-sm px-3 py-1.5 text-meta font-semibold transition-colors',
 			value === ''
 				? 'bg-navy-deep text-[#f5efeb]'
 				: 'border border-border bg-card text-primary hover:bg-muted'
@@ -24,7 +24,7 @@
 		<button
 			onclick={() => (value = value === o.key ? '' : o.key)}
 			class={cn(
-				'rounded-full px-[17px] py-[8px] text-[12.5px] font-semibold transition-all',
+				'rounded-sm px-3 py-1.5 text-meta font-semibold transition-colors',
 				value === o.key
 					? 'bg-navy-deep text-[#f5efeb]'
 					: 'border border-border bg-card text-primary hover:bg-muted'

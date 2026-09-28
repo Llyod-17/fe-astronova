@@ -51,18 +51,17 @@
 		>
 			{#each rows as s (s.id)}
 				<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-					<td class="px-[12px] py-[13px] text-[12.5px] font-semibold text-primary">{s.id}</td>
-					<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground">{s.tripId}</td>
-					<td
-						class="px-[12px] py-[13px] text-right text-[12.5px] text-muted-foreground tabular-nums"
+					<td class="px-[12px] py-[13px] text-body-sm font-semibold text-primary">{s.id}</td>
+					<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground">{s.tripId}</td>
+					<td class="px-[12px] py-[13px] text-right text-body-sm text-muted-foreground tabular-nums"
 						>{rupiah(s.um)}</td
 					>
-					<td class="px-[12px] py-[13px] text-right text-[12.5px] text-navy-deep tabular-nums"
+					<td class="px-[12px] py-[13px] text-right text-body-sm text-navy-deep tabular-nums"
 						>{rupiah(s.real)}</td
 					>
-					<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground">{s.arah.label}</td>
+					<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground">{s.arah.label}</td>
 					<td
-						class="px-[12px] py-[13px] text-right text-[12.5px] font-semibold text-navy-deep tabular-nums"
+						class="px-[12px] py-[13px] text-right text-body-sm font-semibold text-navy-deep tabular-nums"
 						>{rupiah(s.arah.nominal)}</td
 					>
 					<td class="px-[12px] py-[13px]"><StatusBadge status={s.status} /></td>
@@ -85,7 +84,7 @@
 	</Card>
 
 	<div
-		class="mt-4 flex items-center gap-2 rounded-2xl border border-border bg-muted/40 px-4 py-3 text-[12.5px] font-medium text-muted-foreground"
+		class="mt-4 flex items-center gap-2 rounded-sm border border-border bg-muted/40 px-4 py-3 text-body-sm font-medium text-muted-foreground"
 	>
 		<ScrollText size={15} class="text-secondary" />
 		Settlement impas tidak memicu transaksi pembayaran. Arah dihitung otomatis dari uang muka cair vs

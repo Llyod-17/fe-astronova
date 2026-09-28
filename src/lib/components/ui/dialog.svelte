@@ -39,17 +39,17 @@
 <dialog
 	bind:this={el}
 	class={cn(
-		'w-[calc(100vw-32px)] max-w-lg rounded-[26px] bg-card p-0 text-card-foreground shadow-topbar',
+		'w-[calc(100vw-32px)] max-w-lg rounded-md bg-card p-0 text-card-foreground shadow-raised',
 		'backdrop:bg-navy-deep/40 backdrop:backdrop-blur-[2px]',
 		'border border-border',
 		cls
 	)}
 >
 	<div class="flex items-center justify-between border-b border-border px-6 py-4">
-		<h3 class="font-heading text-lg font-medium text-navy-deep">{title}</h3>
+		<h3 class="font-heading text-heading font-medium text-navy-deep">{title}</h3>
 		<button
 			onclick={() => onOpenChange(false)}
-			class="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-navy-deep"
+			class="rounded-xs p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-navy-deep"
 			aria-label="Tutup dialog"
 		>
 			<X size={16} />

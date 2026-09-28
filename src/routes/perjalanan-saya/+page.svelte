@@ -54,20 +54,20 @@
 						: ''} last:border-0 hover:bg-muted/40"
 					onclick={() => (openTrip = openTrip === t.id ? '' : t.id)}
 				>
-					<td class="px-[12px] py-[14px] text-[12.5px] font-semibold text-primary">{t.id}</td>
+					<td class="px-[12px] py-[14px] text-body-sm font-semibold text-primary">{t.id}</td>
 					<td class="px-[12px] py-[14px]"><RouteCell from="CGK" to={t.kota} /></td>
-					<td class="px-[12px] py-[14px] text-[12.5px] text-muted-foreground"
+					<td class="px-[12px] py-[14px] text-body-sm text-muted-foreground"
 						>{dateId(t.berangkat)} — {dateId(t.kembali)}</td
 					>
-					<td class="max-w-[260px] truncate px-[12px] py-[14px] text-[12.5px] text-muted-foreground"
+					<td class="max-w-[260px] truncate px-[12px] py-[14px] text-body-sm text-muted-foreground"
 						>{t.keperluan}</td
 					>
-					<td class="px-[12px] py-[14px] text-[12.5px] font-semibold text-navy-deep"
+					<td class="px-[12px] py-[14px] text-body-sm font-semibold text-navy-deep"
 						>{rupiah(t.anggaran)}</td
 					>
 					<td class="px-[12px] py-[14px]"><StatusBadge status={t.status} /></td>
 					<td
-						class="px-[12px] py-[14px] text-[10.5px] font-semibold tracking-[0.05em] text-muted-subtle uppercase"
+						class="px-[12px] py-[14px] text-label font-semibold tracking-caps text-muted-subtle uppercase"
 					>
 						{openTrip === t.id ? 'Tutup' : 'Itinerary'}
 					</td>
@@ -76,11 +76,11 @@
 					<tr class="border-b border-border bg-muted/30 last:border-0">
 						<td class="px-[12px] py-[14px]" colspan="7">
 							<div class="flex flex-wrap items-center gap-x-10 gap-y-3 px-1 py-2">
-								<div class="flex items-center gap-2 text-[12.5px] text-muted-foreground">
+								<div class="flex items-center gap-2 text-body-sm text-muted-foreground">
 									<CalendarDays size={14} class="text-secondary" />
 									{daysBetween(t.berangkat, t.kembali)} hari
 								</div>
-								<div class="flex items-center gap-2 text-[12.5px] text-muted-foreground">
+								<div class="flex items-center gap-2 text-body-sm text-muted-foreground">
 									<MapPin size={14} class="text-secondary" />
 									{t.tujuan}
 								</div>
@@ -88,7 +88,7 @@
 								<div class="flex flex-wrap gap-1.5">
 									{#each itinerary.filter((i) => i.tripId === t.id) as it (it.id)}
 										<span
-											class="rounded-full border border-border bg-card px-3 py-1 text-[12px] font-medium text-muted-foreground"
+											class="rounded-xs border border-border bg-card px-3 py-1 text-meta font-medium text-muted-foreground"
 										>
 											<span class="font-semibold text-navy-deep">{it.waktu}</span> · {it.aktivitas}
 										</span>

@@ -38,7 +38,7 @@
 		trend="sinkron dengan finance"
 		trendDir="up"
 	/>
-	<StatCard label="Total Anggaran" value={totalAnggaran} note="anggaran" />
+	<StatCard label="Total Anggaran" format="currency" value={totalAnggaran} note="anggaran" />
 </div>
 
 <div class="mt-5 grid gap-5 xl:grid-cols-[1.6fr_1fr]">
@@ -56,25 +56,23 @@
 		>
 			{#each trips as t (t.id)}
 				<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-					<td class="px-[12px] py-[13px] text-[12.5px] font-semibold text-primary">{t.id}</td>
+					<td class="px-[12px] py-[13px] text-body-sm font-semibold text-primary">{t.id}</td>
 					<td class="px-[12px] py-[13px] text-right">
-						<span class="inline-flex items-center gap-2 text-[12.5px] font-medium text-navy-deep">
+						<span class="inline-flex items-center gap-2 text-body-sm font-medium text-navy-deep">
 							<span
-								class="grid h-7 w-7 place-items-center rounded-full bg-accent text-[10px] font-bold text-accent-foreground"
+								class="grid h-7 w-7 place-items-center rounded-full bg-accent text-label font-bold text-accent-foreground"
 								>AF</span
 							>
 							Ahmad Fauzi
 						</span>
 					</td>
 					<td class="px-[12px] py-[13px]"><RouteCell from="CGK" to={t.kota} /></td>
-					<td class="px-[12px] py-[13px] text-[12px] text-muted-foreground"
-						>{dateId(t.berangkat)}</td
-					>
+					<td class="px-[12px] py-[13px] text-meta text-muted-foreground">{dateId(t.berangkat)}</td>
 					<td
-						class="px-[12px] py-[13px] text-right text-[12.5px] font-semibold text-navy-deep tabular-nums"
+						class="px-[12px] py-[13px] text-right text-body-sm font-semibold text-navy-deep tabular-nums"
 						>{rupiah(t.anggaran)}</td
 					>
-					<td class="px-[12px] py-[13px] text-right text-[12.5px] text-muted-foreground">
+					<td class="px-[12px] py-[13px] text-right text-body-sm text-muted-foreground">
 						{bookings.filter((b) => b.tripId === t.id).length} item
 					</td>
 					<td class="px-[12px] py-[13px]"><StatusBadge status={t.status} /></td>
@@ -84,22 +82,20 @@
 	</Card>
 
 	<Card>
-		<p class="mb-4 font-heading text-[18px] font-medium text-navy-deep">Insight Singkat</p>
+		<p class="mb-4 font-heading text-heading font-medium text-navy-deep">Insight Singkat</p>
 		<div class="grid gap-3">
 			{#each [0, 1, 2] as i (i)}
-				<div
-					class="bg-surface flex items-center gap-3 rounded-2xl border border-border px-4 py-3.5"
-				>
+				<div class="bg-surface flex items-center gap-3 rounded-sm border border-border px-4 py-3.5">
 					<span
-						class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent text-accent-foreground"
+						class="grid h-9 w-9 shrink-0 place-items-center rounded-xs bg-accent text-accent-foreground"
 					>
 						<i>{i === 0 ? '✈' : i === 1 ? '🏨' : '🚗'}</i>
 					</span>
 					<div class="min-w-0">
-						<p class="text-[12.5px] font-semibold text-navy-deep">
+						<p class="text-body-sm font-semibold text-navy-deep">
 							{i === 0 ? 'Pesawat' : i === 1 ? 'Hotel' : 'Transportasi'}
 						</p>
-						<p class="text-[12px] text-muted-foreground">
+						<p class="text-meta text-muted-foreground">
 							{i === 0
 								? '3 penerbangan terkonfirmasi bulan ini'
 								: i === 1
@@ -111,13 +107,13 @@
 			{/each}
 		</div>
 		<div
-			class="mt-4 flex items-center gap-2 rounded-2xl bg-ok-bg/40 px-4 py-3 text-[12.5px] font-medium text-ok-fg"
+			class="mt-4 flex items-center gap-2 rounded-sm bg-ok-bg/40 px-4 py-3 text-body-sm font-medium text-ok-fg"
 		>
 			<TrendingUp size={15} /> Efisiensi anggaran tim {Math.round(((selesai || 1) - 1) * 12)}% lebih
 			baik dari kuartal lalu
 		</div>
 		<div
-			class="mt-3 flex items-center gap-2 rounded-2xl bg-muted/60 px-4 py-3 text-[12.5px] font-medium text-muted-foreground"
+			class="mt-3 flex items-center gap-2 rounded-sm bg-muted/60 px-4 py-3 text-body-sm font-medium text-muted-foreground"
 		>
 			<Users size={15} /> 1 anggota aktif berpergian hari ini
 		</div>

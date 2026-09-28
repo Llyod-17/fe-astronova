@@ -36,14 +36,14 @@
 		note="vendor"
 		trendDir="up"
 	/>
-	<StatCard label="Total Nilai Booking" value={totalValue} note="terkonfirmasi" />
+	<StatCard label="Total Nilai Booking" format="currency" value={totalValue} note="terkonfirmasi" />
 	<StatCard label="Vendor Terdaftar" value={vendors.length} note="partner" />
 </div>
 
 <div class="mt-5 grid gap-5 xl:grid-cols-[1.6fr_1fr]">
 	<Card>
 		<div class="mb-4 flex items-center justify-between">
-			<p class="font-heading text-[18px] font-medium text-navy-deep">Booking Pending Konfirmasi</p>
+			<p class="font-heading text-heading font-medium text-navy-deep">Booking Pending Konfirmasi</p>
 			<StatusBadge status="pending" />
 		</div>
 		<Table
@@ -57,14 +57,14 @@
 		>
 			{#each needsBooking as b (b.id)}
 				<tr class="border-b border-border last:border-0 hover:bg-muted/40">
-					<td class="px-[12px] py-[13px] text-[12.5px] font-semibold text-primary">{b.id}</td>
+					<td class="px-[12px] py-[13px] text-body-sm font-semibold text-primary">{b.id}</td>
 					<td class="px-[12px] py-[13px]">
-						<p class="text-[12.5px] font-semibold text-navy-deep">{b.jenis}</p>
-						<p class="text-[12px] text-muted-foreground">{b.detail}</p>
+						<p class="text-body-sm font-semibold text-navy-deep">{b.jenis}</p>
+						<p class="text-meta text-muted-foreground">{b.detail}</p>
 					</td>
-					<td class="px-[12px] py-[13px] text-[12.5px] text-muted-foreground">{b.vendor}</td>
+					<td class="px-[12px] py-[13px] text-body-sm text-muted-foreground">{b.vendor}</td>
 					<td
-						class="px-[12px] py-[13px] text-right text-[12.5px] font-semibold text-navy-deep tabular-nums"
+						class="px-[12px] py-[13px] text-right text-body-sm font-semibold text-navy-deep tabular-nums"
 						>{rupiah(b.harga)}</td
 					>
 					<td class="px-[12px] py-[13px]">
@@ -79,76 +79,73 @@
 			{/each}
 		</Table>
 		{#if needsBooking.length === 0}
-			<p class="py-8 text-center text-[13px] text-muted-subtle">Tidak ada booking tertunda.</p>
+			<p class="py-8 text-center text-body-sm text-muted-subtle">Tidak ada booking tertunda.</p>
 		{/if}
 	</Card>
 
 	<Card>
-		<p class="mb-4 font-heading text-[18px] font-medium text-navy-deep">List Kontrol</p>
+		<p class="mb-4 font-heading text-heading font-medium text-navy-deep">List Kontrol</p>
 		<div class="grid gap-2.5">
 			<a
 				href="/admin-travel/request"
-				class="bg-surface flex items-center gap-3 rounded-2xl border border-border px-4 py-3.5 text-[13px] font-semibold text-navy-deep transition-colors hover:border-ring"
+				class="bg-surface flex items-center gap-3 rounded-sm border border-border px-4 py-3.5 text-body-sm font-semibold text-navy-deep transition-colors hover:border-ring"
 			>
 				<span
 					class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
 					><ClipboardList size={16} /></span
 				>
 				Request Perjalanan
-				<span class="ml-auto text-[11.5px] font-medium text-muted-subtle"
-					>{approved.length} siap</span
-				>
+				<span class="ml-auto text-meta font-medium text-muted-subtle">{approved.length} siap</span>
 			</a>
 			<a
 				href="/admin-travel/booking"
-				class="bg-surface flex items-center gap-3 rounded-2xl border border-border px-4 py-3.5 text-[13px] font-semibold text-navy-deep transition-colors hover:border-ring"
+				class="bg-surface flex items-center gap-3 rounded-sm border border-border px-4 py-3.5 text-body-sm font-semibold text-navy-deep transition-colors hover:border-ring"
 			>
 				<span
 					class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
 					><Plane size={16} /></span
 				>
 				Kelola Booking
-				<span class="ml-auto text-[11.5px] font-medium text-muted-subtle"
-					>{bookings.length} total</span
-				>
+				<span class="ml-auto text-meta font-medium text-muted-subtle">{bookings.length} total</span>
 			</a>
 			<a
 				href="/admin-travel/itinerary"
-				class="bg-surface flex items-center gap-3 rounded-2xl border border-border px-4 py-3.5 text-[13px] font-semibold text-navy-deep transition-colors hover:border-ring"
+				class="bg-surface flex items-center gap-3 rounded-sm border border-border px-4 py-3.5 text-body-sm font-semibold text-navy-deep transition-colors hover:border-ring"
 			>
 				<span
 					class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
 					><CalendarDays size={16} /></span
 				>
 				Susun Itinerary
-				<span class="ml-auto text-[11.5px] font-medium text-muted-subtle"
+				<span class="ml-auto text-meta font-medium text-muted-subtle"
 					>{trips.filter((t) => t.status === 'berlangsung').length} aktif</span
 				>
 			</a>
 			<a
 				href="/admin-travel/vendor"
-				class="bg-surface flex items-center gap-3 rounded-2xl border border-border px-4 py-3.5 text-[13px] font-semibold text-navy-deep transition-colors hover:border-ring"
+				class="bg-surface flex items-center gap-3 rounded-sm border border-border px-4 py-3.5 text-body-sm font-semibold text-navy-deep transition-colors hover:border-ring"
 			>
 				<span
 					class="grid h-9 w-9 place-items-center rounded-[0.85rem] bg-accent text-accent-foreground"
 					><Building2 size={16} /></span
 				>
 				Vendor Travel
-				<span class="ml-auto text-[11.5px] font-medium text-muted-subtle"
-					>{vendors.length} partner</span
+				<span class="ml-auto text-meta font-medium text-muted-subtle">{vendors.length} partner</span
 				>
 			</a>
 		</div>
 
-		<p class="mt-5 mb-2 font-heading text-[16px] font-medium text-navy-deep">Perjalanan Aktif</p>
+		<p class="mt-5 mb-2 font-heading text-heading-sm font-medium text-navy-deep">
+			Perjalanan Aktif
+		</p>
 		<div class="grid gap-2">
 			{#each trips.filter((t) => t.status === 'berlangsung') as t (t.id)}
 				<div
-					class="bg-surface flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3"
+					class="bg-surface flex items-center justify-between gap-3 rounded-sm border border-border px-4 py-3"
 				>
 					<div>
-						<p class="text-[12.5px] font-semibold text-navy-deep">{t.id} · {t.kota}</p>
-						<p class="text-[11.5px] text-muted-subtle">
+						<p class="text-body-sm font-semibold text-navy-deep">{t.id} · {t.kota}</p>
+						<p class="text-meta text-muted-subtle">
 							{dateId(t.berangkat)} — {dateId(t.kembali)}
 						</p>
 					</div>

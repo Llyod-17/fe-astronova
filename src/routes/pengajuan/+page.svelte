@@ -100,7 +100,7 @@
 
 <div class="mt-5 grid gap-5 xl:grid-cols-[1.5fr_1fr]">
 	<Card>
-		<p class="mb-5 font-heading text-[18px] font-medium text-navy-deep">Form Pengajuan Baru</p>
+		<p class="mb-5 font-heading text-heading font-medium text-navy-deep">Form Pengajuan Baru</p>
 		<form
 			onsubmit={(e) => {
 				e.preventDefault();
@@ -114,25 +114,25 @@
 					bind:value={f.tujuan}
 					placeholder="Cth: Kantor Cabang Surabaya"
 				/>
-				{#if errOf('tujuan')}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errOf('tujuan')}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errOf('tujuan')}
 					</p>{/if}
 			</div>
 			<div>
 				<Input label="Kota Tujuan" bind:value={f.kota} placeholder="Cth: Surabaya" />
-				{#if errOf('kota')}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errOf('kota')}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errOf('kota')}
 					</p>{/if}
 			</div>
 			<div>
 				<Input label="Tanggal Berangkat" type="date" bind:value={f.berangkat} />
-				{#if errOf('berangkat')}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errOf('berangkat')}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errOf('berangkat')}
 					</p>{/if}
 			</div>
 			<div>
 				<Input label="Tanggal Kembali" type="date" bind:value={f.kembali} />
-				{#if errOf('kembali')}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errOf('kembali')}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errOf('kembali')}
 					</p>{/if}
 			</div>
@@ -142,7 +142,7 @@
 					bind:value={f.keperluan}
 					placeholder="Jelaskan keperluan perjalanan dinas"
 				/>
-				{#if errOf('keperluan')}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errOf('keperluan')}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errOf('keperluan')}
 					</p>{/if}
 			</div>
@@ -153,28 +153,28 @@
 						<option value={p.nama}>{p.nama} ({p.kode})</option>
 					{/each}
 				</Sel>
-				{#if errOf('proyek')}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errOf('proyek')}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errOf('proyek')}
 					</p>{/if}
 			</div>
 			<div>
 				<Input label="Estimasi Biaya (Rp)" type="number" min="0" bind:value={f.anggaran} />
-				{#if errOf('anggaran')}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errOf('anggaran')}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errOf('anggaran')}
 					</p>{/if}
 			</div>
 			<div>
 				<Input label="Uang Muka (Rp)" type="number" min="0" bind:value={f.uangMuka} />
-				{#if errOf('uangMuka')}<p class="mt-1.5 text-[12px] font-medium text-destructive">
+				{#if errOf('uangMuka')}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errOf('uangMuka')}
 					</p>{/if}
 			</div>
 			<div class="sm:col-span-2">
-				<p class="mb-1.5 block text-[12.5px] font-semibold text-navy-deep">Dokumen Pendukung</p>
+				<p class="mb-1.5 block text-body-sm font-semibold text-navy-deep">Dokumen Pendukung</p>
 				<button
 					type="button"
 					onclick={addFile}
-					class="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-input bg-surface-input px-4 py-9 text-[12.5px] font-medium text-muted-subtle transition-colors hover:border-ring hover:text-secondary"
+					class="flex w-full items-center justify-center gap-2 rounded-sm border border-dashed border-input bg-surface-input px-4 py-9 text-body-sm font-medium text-muted-subtle transition-colors hover:border-ring hover:text-secondary"
 				>
 					<Paperclip size={15} /> Klik untuk melampirkan dokumen
 				</button>
@@ -182,7 +182,7 @@
 					<ul class="mt-2 flex flex-wrap gap-2">
 						{#each files as fl (fl)}
 							<li
-								class="rounded-full bg-accent px-3 py-1.5 text-[11.5px] font-semibold text-accent-foreground"
+								class="rounded-xs bg-accent px-3 py-1.5 text-meta font-semibold text-accent-foreground"
 							>
 								{fl}
 							</li>
@@ -207,12 +207,12 @@
 	</Card>
 
 	<Card>
-		<p class="mb-4 font-heading text-[18px] font-medium text-navy-deep">Riwayat Pengajuan</p>
+		<p class="mb-4 font-heading text-heading font-medium text-navy-deep">Riwayat Pengajuan</p>
 		<Table headers={[{ label: 'Rute' }, { label: 'Tanggal' }, { label: 'Status' }]}>
 			{#each trips as t (t.id)}
 				<tr class="border-b border-border last:border-0 hover:bg-muted/40">
 					<td class="px-[12px] py-[12px]"><RouteCell from="CGK" to={t.kota} /></td>
-					<td class="px-[12px] py-[12px] text-[12.5px] text-muted-foreground"
+					<td class="px-[12px] py-[12px] text-body-sm text-muted-foreground"
 						>{dateId(t.berangkat)}</td
 					>
 					<td class="px-[12px] py-[12px]"><StatusBadge status={t.status} /></td>
