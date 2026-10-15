@@ -6,17 +6,39 @@
 	import Input from '$lib/components/ui/input.svelte';
 	import Button from '$lib/components/ui/button.svelte';
 	import { DELEGASI_ACTIVE, USERS } from '$lib/data/mock';
+	import { delegasiList, be, session } from '$lib/state.svelte';
+	import { create } from '$lib/api';
+
+	const activeDelegasi = $derived(be.live && delegasiList.length ? delegasiList.find((d: any) => d.aktif) : null);
 
 	let delegasi = $state({ ...DELEGASI_ACTIVE });
 	let enable = $state(true);
 
-	function simpan() {
+	const kandidat = $derived(
+		be.live && delegasiList.length
+			? delegasiList.map((d: any) => ({ id: d.id, nama: d.kepada, jabatan: '' })).slice(0, 4)
+			: USERS.filter((u) => u.id === 3 || u.id === 2)
+	);
+
+	async function simpan() {
+		try {
+			await create('delegasi', {
+				id_penerima: delegasiList.find((d: any) => d.kepada === delegasi.kepada)?.id_penerima ?? undefined,
+				dari_tgl: delegasi.dari_tgl,
+				sampai_tgl: delegasi.sampai_tgl,
+				alasan: delegasi.alasan,
+				aktif: enable
+			});
+		} catch {}
 		toast.success(enable ? 'Delegasi aktif' : 'Delegasi dinonaktifkan', {
 			description: enable
 				? `${delegasi.dari} → ${delegasi.kepada} hingga ${delegasi.sampai_tgl}.`
 				: 'Persetujuan kembali ke atasan langsung.'
 		});
 	}
+
+	const shown = $derived(activeDelegasi ?? delegasi);
+	const isActive = $derived(activeDelegasi ? activeDelegasi.aktif : enable);
 </script>
 
 <svelte:head><title>Delegasi — Astronova</title></svelte:head>
@@ -34,7 +56,7 @@
 			<div>
 				<p class="mb-1.5 text-body-sm font-semibold text-navy-deep">Wakil Persetujuan</p>
 				<div class="grid grid-cols-2 gap-2">
-					{#each USERS.filter((u) => u.id === 3 || u.id === 2) as u (u.id)}
+					{#each kandidat as u (u.id)}
 						<button
 							type="button"
 							onclick={() => (delegasi.kepada = u.nama)}
@@ -78,19 +100,19 @@
 			</span>
 			<div class="min-w-0">
 				<p class="text-body-sm font-semibold text-navy-deep">
-					{delegasi.dari} <span class="text-muted-subtle">→</span>
-					{delegasi.kepada}
+					{shown.dari} <span class="text-muted-subtle">→</span>
+					{shown.kepada}
 				</p>
 				<p class="mt-0.5 text-body-sm text-muted-foreground">
-					{delegasi.alasan} · berlaku {delegasi.dari_tgl} s.d. {delegasi.sampai_tgl}
+					{shown.alasan} · berlaku {shown.dari_tgl} s.d. {shown.sampai_tgl}
 				</p>
 				<p class="mt-2 text-meta font-medium">
 					<span
-						class="rounded-full px-2.5 py-1 {enable
+						class="rounded-full px-2.5 py-1 {isActive
 							? 'bg-ok-bg text-ok-fg'
 							: 'bg-muted text-muted-subtle'}"
 					>
-						{enable ? 'Aktif' : 'Nonaktif'}
+						{isActive ? 'Aktif' : 'Nonaktif'}
 					</span>
 				</p>
 			</div>

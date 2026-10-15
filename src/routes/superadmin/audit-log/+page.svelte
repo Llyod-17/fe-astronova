@@ -6,6 +6,10 @@
 	import Badge from '$lib/components/ui/badge.svelte';
 	import { AUDIT_LOG } from '$lib/data/mock';
 	import { dateTimeId } from '$lib/format';
+	import { auditLive, be, loadAuditLive } from '$lib/state.svelte';
+	import { onMount } from 'svelte';
+	onMount(loadAuditLive);
+	const rows = $derived(be.live && auditLive.rows.length ? auditLive.rows : AUDIT_LOG);
 </script>
 
 <svelte:head><title>Audit Log — Astronova</title></svelte:head>
@@ -24,7 +28,7 @@
 				><ScrollText size={16} /></span
 			>
 			<p class="font-heading text-heading-sm font-medium text-navy-deep">
-				Log Aktivitas ({AUDIT_LOG.length} entri)
+				Log Aktivitas ({rows.length} entri){be.live ? ' — live BE' : ' — data contoh'}
 			</p>
 		</div>
 		<div class="px-6 pt-4 pb-6">
@@ -37,7 +41,7 @@
 					{ label: 'IP' }
 				]}
 			>
-				{#each AUDIT_LOG as e (e.id)}
+				{#each rows as e (e.id)}
 					<tr class="border-b border-border last:border-0 hover:bg-muted/40">
 						<td class="px-[12px] py-[13px] text-meta whitespace-nowrap text-muted-foreground"
 							>{dateTimeId(e.waktu)}</td

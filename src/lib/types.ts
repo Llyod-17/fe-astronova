@@ -110,6 +110,16 @@ export interface Notif {
 	dibaca: boolean;
 }
 
+export interface Delegasi {
+	id?: number;
+	dari: string;
+	kepada: string;
+	dari_tgl: string;
+	sampai_tgl: string;
+	alasan: string;
+	aktif?: boolean;
+}
+
 export interface Dept {
 	id: number;
 	nama: string;

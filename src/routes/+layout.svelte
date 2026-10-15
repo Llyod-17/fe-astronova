@@ -9,8 +9,17 @@
 	let { children } = $props();
 
 	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { bootBe, bootState, session } from '$lib/state.svelte';
+	onMount(bootBe);
 	const BARE = ['/login', '/register'];
 	const bare = $derived(BARE.some((p) => page.url.pathname.startsWith(p)));
+
+	// ponytail: guard client-side; redirect ke /login sampai token valid (/me sukses).
+	$effect(() => {
+		if (bootState.sessionReady && !bare && !session.authed) goto('/login');
+	});
 
 	let menuOpen = $state(false);
 </script>

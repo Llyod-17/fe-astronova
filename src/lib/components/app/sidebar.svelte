@@ -1,24 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
 	import { ROLE_MENUS } from '$lib/config/nav';
 	import { cn } from '$lib/utils';
-	import { session, switchRole } from '$lib/state.svelte';
+	import { session, doLogout } from '$lib/state.svelte';
 	import { initials } from '$lib/format';
-	import type { Role } from '$lib/types';
-	import { X } from 'lucide-svelte';
+	import { X, LogOut } from 'lucide-svelte';
 
 	let {
 		mobileOpen = false,
 		onMobileClose = () => {}
 	}: { mobileOpen?: boolean; onMobileClose?: () => void } = $props();
-
-	const ROLES: { key: Role; label: string }[] = [
-		{ key: 'karyawan', label: 'Karyawan' },
-		{ key: 'atasan', label: 'Atasan' },
-		{ key: 'admin-travel', label: 'Admin Travel' },
-		{ key: 'finance', label: 'Finance' },
-		{ key: 'superadmin', label: 'Super Admin' }
-	];
 
 	const pathname = $derived(page.url.pathname);
 	const menus = $derived(ROLE_MENUS[session.role]);
@@ -26,6 +18,11 @@
 	const isActive = $derived((href: string) =>
 		href === pathname ? true : href !== '/' && pathname.startsWith(href)
 	);
+
+	async function logout() {
+		await doLogout();
+		goto('/login');
+	}
 </script>
 
 {#snippet navContent()}
@@ -85,16 +82,14 @@
 			</div>
 		</div>
 		<label class="block">
-			<span class="text-label font-semibold text-muted-subtle uppercase">Lihat sebagai</span>
-			<select
-				value={session.role}
-				onchange={(e) => switchRole(e.currentTarget.value as Role)}
-				class="mt-1.5 w-full cursor-pointer rounded-sm border border-input bg-surface-input px-2 py-1.5 text-meta text-navy-deep transition-colors focus:border-ring focus:ring-1 focus:ring-ring focus:outline-none"
+			<span class="text-label font-semibold text-muted-subtle uppercase">Masuk sebagai</span>
+			<button
+				onclick={logout}
+				class="mt-1.5 flex w-full items-center justify-between gap-2 rounded-sm border border-input bg-surface-input px-2 py-1.5 text-meta text-navy-deep transition-colors hover:border-border-strong"
 			>
-				{#each ROLES as r (r.key)}
-					<option value={r.key}>{r.label}</option>
-				{/each}
-			</select>
+				<span class="truncate">{session.user.jabatan || session.role}</span>
+				<LogOut size={13} class="shrink-0" />
+			</button>
 		</label>
 	</div>
 {/snippet}

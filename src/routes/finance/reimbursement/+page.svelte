@@ -5,14 +5,34 @@
 	import Table from '$lib/components/ui/table.svelte';
 	import Button from '$lib/components/ui/button.svelte';
 	import StatusBadge from '$lib/components/app/status-badge.svelte';
-	import { bayarReimbursement, reimbursements, verifikasiReimbursement } from '$lib/state.svelte';
+	import { bayarReimbursement, reimbursements, verifikasiReimbursement, be, loadReimbursements } from '$lib/state.svelte';
+	import { approve, patchStatus } from '$lib/api';
 	import { rupiah } from '$lib/format';
+	import { onMount } from 'svelte';
+	onMount(loadReimbursements);
 
+	async function beAct(id: string, fn: (nid: number) => Promise<unknown>, local: () => void) {
+		const raw = (reimbursements.find((r) => r.id === id) as any)?._raw;
+		if (be.live && raw?.id_penggantian != null) {
+			try {
+				await fn(raw.id_penggantian);
+				await loadReimbursements();
+				return;
+			} catch {
+				/* fallback */
+			}
+		}
+		local();
+	}
 	function verif(id: string) {
-		verifikasiReimbursement(id, false);
+		beAct(id, (nid) => patchStatus('pengajuan-penggantian', nid, 'menunggu_persetujuan'), () =>
+			verifikasiReimbursement(id, false)
+		);
 	}
 	function setujui(id: string) {
-		verifikasiReimbursement(id, true);
+		beAct(id, (nid) => approve('pengajuan_penggantian', nid, {}), () =>
+			verifikasiReimbursement(id, true)
+		);
 	}
 </script>
 

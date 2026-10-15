@@ -7,7 +7,8 @@
 	import Button from '$lib/components/ui/button.svelte';
 	import Table from '$lib/components/ui/table.svelte';
 	import StatusBadge from '$lib/components/app/status-badge.svelte';
-	import { ajukanUangMuka, dana, trips, uangMukaTrip } from '$lib/state.svelte';
+	import { ajukanUangMuka, dana, trips, uangMukaTrip, be } from '$lib/state.svelte';
+	import { update } from '$lib/api';
 	import { dateId, rupiah } from '$lib/format';
 	import { z } from 'zod';
 
@@ -25,7 +26,7 @@
 		)
 	);
 
-	function submit() {
+	async function submit() {
 		const r = schema.safeParse(f);
 		if (!r.success) {
 			const e: Record<string, string> = {};
@@ -33,6 +34,14 @@
 				if (i.path[0] && !e[String(i.path[0])]) e[String(i.path[0])] = i.message;
 			errors = e;
 			return;
+		}
+		if (be.live) {
+			const raw = (trips.find((t) => t.id === f.tripId) as any)?._raw;
+			try {
+				if (raw?.id_pengajuan != null) await update('pengajuan-perjalanan', raw.id_pengajuan, { uang_muka: f.jumlah });
+			} catch {
+				/* fallback di bawah */
+			}
 		}
 		ajukanUangMuka(f.tripId, f.jumlah);
 		f = { tripId: '', jumlah: 0 };

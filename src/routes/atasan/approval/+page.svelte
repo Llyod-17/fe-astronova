@@ -7,8 +7,11 @@
 	import Button from '$lib/components/ui/button.svelte';
 	import StatusBadge from '$lib/components/app/status-badge.svelte';
 	import RouteCell from '$lib/components/app/route-cell.svelte';
-	import { approveTrip, rejectTrip, trips } from '$lib/state.svelte';
+	import { approveTrip, rejectTrip, trips, be, loadTrips, setujuBE, tolakBE, historyBE } from '$lib/state.svelte';
 	import { dateId, rupiah } from '$lib/format';
+	import { onMount } from 'svelte';
+	onMount(loadTrips);
+	let hist = $state<any[]>([]);
 
 	let filter = $state('menunggu_persetujuan');
 	const pills = [
@@ -18,13 +21,23 @@
 	];
 	const rows = $derived(filter ? trips.filter((t) => t.status === filter) : trips);
 
-	function setuju(id: string) {
+	async function setuju(id: string) {
 		const catatan = window.prompt('Catatan persetujuan (opsional):');
-		approveTrip(id, catatan ?? undefined);
+		if (be.live) await setujuBE(id, catatan ?? undefined);
+		else approveTrip(id, catatan ?? undefined);
 	}
-	function tolak(id: string) {
+	async function tolak(id: string) {
 		const catatan = window.prompt('Alasan penolakan:');
-		if (catatan) rejectTrip(id, catatan);
+		if (!catatan) return;
+		if (be.live) await tolakBE(id, catatan);
+		else rejectTrip(id, catatan);
+	}
+	async function lihat(id: string) {
+		try {
+			hist = (await historyBE(id)) as any[];
+		} catch {
+			hist = [];
+		}
 	}
 </script>
 
@@ -79,6 +92,9 @@
 							{:else}
 								<span class="text-meta text-muted-subtle">—</span>
 							{/if}
+							<button class="ml-1 text-meta text-secondary underline" onclick={() => lihat(t.id)}
+								>riwayat</button
+							>
 						</div>
 					</td>
 				</tr>
@@ -86,6 +102,13 @@
 		</Table>
 		{#if rows.length === 0}
 			<p class="py-8 text-center text-body-sm text-muted-subtle">Tidak ada data pada filter ini.</p>
+		{/if}
+		{#if hist.length > 0}
+			<p class="px-6 py-3 text-body-sm text-muted-foreground">
+				Riwayat: {hist
+					.map((h) => `${h.status_label ?? h.status} — ${h.catatan ?? ''}`)
+					.join(' | ')}
+			</p>
 		{/if}
 	</Card>
 </div>

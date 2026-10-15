@@ -8,9 +8,15 @@
 	import Button from '$lib/components/ui/button.svelte';
 	import Table from '$lib/components/ui/table.svelte';
 	import StatusBadge from '$lib/components/app/status-badge.svelte';
-	import { ajukanReimbursement, kategori, reimbursements, trips } from '$lib/state.svelte';
+	import { ajukanReimbursement, kategori, reimbursements, trips, be, loadMasters, loadTrips, loadReimbursements, ajukanGantiBE } from '$lib/state.svelte';
 	import { rupiah } from '$lib/format';
 	import { z } from 'zod';
+	import { onMount } from 'svelte';
+	onMount(async () => {
+		await loadMasters();
+		await loadTrips();
+		await loadReimbursements();
+	});
 
 	const schema = z.object({
 		tripId: z.string().min(1, 'Pilih perjalanan'),
@@ -38,13 +44,15 @@
 			errors = e;
 			return;
 		}
-		ajukanReimbursement({
-			tripId: f.tripId,
-			kategori: f.kategori,
-			deskripsi: f.deskripsi,
-			jumlah: f.jumlah,
-			bukti
-		});
+		if (be.live) ajukanGantiBE({ ...f, bukti });
+		else
+			ajukanReimbursement({
+				tripId: f.tripId,
+				kategori: f.kategori,
+				deskripsi: f.deskripsi,
+				jumlah: f.jumlah,
+				bukti
+			});
 		f = { tripId: '', kategori: '', deskripsi: '', jumlah: 0 };
 		errors = {};
 	}

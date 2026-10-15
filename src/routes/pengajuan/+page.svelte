@@ -9,9 +9,14 @@
 	import Table from '$lib/components/ui/table.svelte';
 	import StatusBadge from '$lib/components/app/status-badge.svelte';
 	import RouteCell from '$lib/components/app/route-cell.svelte';
-	import { addTrip, proyeks, trips } from '$lib/state.svelte';
+	import { addTrip, proyeks, destinasi, trips, be, loadMasters, loadTrips, kirimPengajuanBE, uploadDokumenBE } from '$lib/state.svelte';
 	import { dateId, todayIso } from '$lib/format';
 	import { Plane, Paperclip } from 'lucide-svelte';
+	import { onMount } from 'svelte';
+	onMount(async () => {
+		await loadMasters();
+		await loadTrips();
+	});
 
 	const schema = z
 		.object({
@@ -60,17 +65,33 @@
 		return errors[key] ?? '';
 	}
 
-	function submit() {
+	async function submit() {
 		if (!validate()) {
 			toast.error('Periksa kembali form pengajuan', {
 				description: 'Beberapa field wajib belum terisi dengan benar.'
 			});
 			return;
 		}
-		const t = addTrip({ ...f, karyawanId: 1 });
-		toast.success(`Pengajuan ${t.id} terkirim`, {
-			description: 'Pengajuan diteruskan ke atasan untuk persetujuan.'
-		});
+		if (!be.live) {
+			const t = addTrip({ ...f, karyawanId: 1 });
+			toast.success(`Pengajuan ${t.id} terkirim (lokal, BE mati)`);
+		} else {
+			try {
+				await kirimPengajuanBE({ ...f });
+				// upload dokumen bila ada file beneran dipilih
+				const inp = document.getElementById('dok-be') as HTMLInputElement | null;
+				const raw = (trips[0] as any)?._raw;
+				if (inp?.files?.length && raw?.id_pengajuan) {
+					for (const fl of inp.files) await uploadDokumenBE(fl, raw.id_pengajuan).catch(() => {});
+				}
+				toast.success('Pengajuan terkirim ke BE');
+			} catch (e: unknown) {
+				toast.error((e as { message?: string })?.message ?? 'Gagal kirim', {
+					description: JSON.stringify((e as { errors?: unknown })?.errors ?? '')
+				});
+				return;
+			}
+		}
 		f = {
 			tujuan: '',
 			kota: '',
@@ -158,6 +179,14 @@
 					</p>{/if}
 			</div>
 			<div>
+				<Sel label="Destinasi BE" bind:value={f.tujuan}>
+					<option value="">— samakan dengan tujuan —</option>
+					{#each destinasi as d (d.id)}
+						<option value={d.nama}>{d.nama} — {d.kota}</option>
+					{/each}
+				</Sel>
+			</div>
+			<div>
 				<Input label="Estimasi Biaya (Rp)" type="number" min="0" bind:value={f.anggaran} />
 				{#if errOf('anggaran')}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errOf('anggaran')}
@@ -171,6 +200,7 @@
 			</div>
 			<div class="sm:col-span-2">
 				<p class="mb-1.5 block text-body-sm font-semibold text-navy-deep">Dokumen Pendukung</p>
+				<input id="dok-be" type="file" multiple class="mb-2 block text-body-sm" />
 				<button
 					type="button"
 					onclick={addFile}

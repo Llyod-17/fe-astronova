@@ -9,6 +9,7 @@
 	import Table from '$lib/components/ui/table.svelte';
 	import Badge from '$lib/components/ui/badge.svelte';
 	import { USERS } from '$lib/data/mock';
+	import { penggunaList, be } from '$lib/state.svelte';
 	import { initials } from '$lib/format';
 	import { z } from 'zod';
 	import type { Role } from '$lib/types';
@@ -106,7 +107,7 @@
 				{ label: 'Peran' }
 			]}
 		>
-			{#each USERS as u (u.id)}
+			{#each (be.live && penggunaList.length ? penggunaList : USERS) as u (u.id)}
 				<tr class="border-b border-border last:border-0 hover:bg-muted/40">
 					<td class="px-[12px] py-[13px]">
 						<div class="flex items-center gap-2.5">

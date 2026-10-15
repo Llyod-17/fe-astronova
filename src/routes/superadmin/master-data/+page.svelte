@@ -6,10 +6,12 @@
 	import Input from '$lib/components/ui/input.svelte';
 	import Button from '$lib/components/ui/button.svelte';
 	import Table from '$lib/components/ui/table.svelte';
-	import { departments, kategori, proyeks, destinasi } from '$lib/state.svelte';
+	import { onMount } from 'svelte';
+	import { departments, kategori, proyeks, destinasi, be, loadMasters, tambahMaster } from '$lib/state.svelte';
 
 	let tab = $state<'departemen' | 'kategori' | 'proyek' | 'destinasi'>('departemen');
 	let addName = $state('');
+	onMount(loadMasters);
 
 	const TABS = [
 		{ key: 'departemen', label: 'Departemen' },
@@ -18,34 +20,46 @@
 		{ key: 'destinasi', label: 'Destinasi' }
 	] as const;
 
-	function tambah() {
+	async function tambah() {
 		if (!addName.trim()) return toast.error('Nama wajib diisi');
-		if (tab === 'departemen')
-			departments.push({
-				id: Math.max(0, ...departments.map((d) => d.id)) + 1,
-				nama: addName,
-				count: 0
-			});
-		if (tab === 'kategori')
-			kategori.push({
-				id: Math.max(0, ...kategori.map((k) => k.id)) + 1,
-				nama: addName,
-				deskripsi: '—'
-			});
-		if (tab === 'proyek')
-			proyeks.push({
-				id: Math.max(0, ...proyeks.map((p) => p.id)) + 1,
-				nama: addName,
-				kode: `PRJ-2026-${String(proyeks.length + 1).padStart(3, '0')}`
-			});
-		if (tab === 'destinasi')
-			destinasi.push({
-				id: Math.max(0, ...destinasi.map((d) => d.id)) + 1,
-				nama: addName,
-				kota: '—',
-				negara: 'Indonesia'
-			});
-		toast.success(`${addName} ditambahkan ke ${TABS.find((t) => t.key === tab)?.label}`);
+		const nama = addName.trim();
+		if (!be.live) {
+			// fallback lokal lama bila BE mati
+			if (tab === 'departemen')
+				departments.push({
+					id: Math.max(0, ...departments.map((d) => d.id)) + 1,
+					nama,
+					count: 0
+				});
+			if (tab === 'kategori')
+				kategori.push({
+					id: Math.max(0, ...kategori.map((k) => k.id)) + 1,
+					nama,
+					deskripsi: '—'
+				});
+			if (tab === 'proyek')
+				proyeks.push({
+					id: Math.max(0, ...proyeks.map((p) => p.id)) + 1,
+					nama,
+					kode: `PRJ-2026-${String(proyeks.length + 1).padStart(3, '0')}`
+				});
+			if (tab === 'destinasi')
+				destinasi.push({
+					id: Math.max(0, ...destinasi.map((d) => d.id)) + 1,
+					nama,
+					kota: '—',
+					negara: 'Indonesia'
+				});
+			toast.success(`${nama} ditambahkan lokal (BE mati)`);
+			addName = '';
+			return;
+		}
+		try {
+			await tambahMaster(tab, nama);
+			toast.success(`${nama} ditambahkan ke ${TABS.find((t) => t.key === tab)?.label}`);
+		} catch (e: unknown) {
+			toast.error((e as { message?: string })?.message ?? 'Gagal tambah');
+		}
 		addName = '';
 	}
 </script>
