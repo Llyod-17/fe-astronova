@@ -13,38 +13,31 @@ import type {
 	Vendor
 } from './types';
 
-export const BASE =
-	typeof localStorage !== 'undefined' && localStorage.getItem('be_base')
-		? (localStorage.getItem('be_base') as string)
-		: 'http://127.0.0.1:8000/api';
+export const BASE = '/api';
 
-let token: string | null =
-	typeof localStorage !== 'undefined' ? localStorage.getItem('be_token') : null;
+const TOKEN_KEY = 'auth_token';
 
-export function setToken(t: string | null) {
-	token = t;
-	try {
-		if (t) localStorage.setItem('be_token', t);
-		else localStorage.removeItem('be_token');
-	} catch {
-		/* ssr */
-	}
+export function getToken(): string | null {
+	return typeof localStorage !== 'undefined' ? localStorage.getItem(TOKEN_KEY) : null;
 }
-export function getToken() {
-	return token;
+
+export function setToken(token: string | null): void {
+	if (typeof localStorage === 'undefined') return;
+	if (token) localStorage.setItem(TOKEN_KEY, token);
+	else localStorage.removeItem(TOKEN_KEY);
 }
 
 type Opts = { method?: string; body?: unknown; headers?: Record<string, string>; auth?: boolean };
 
-export async function apiFetch(path: string, { method = 'GET', body, headers = {} }: Opts = {}) {
+export async function apiFetch(path: string, { method = 'GET', body, headers = {}, auth = false }: Opts = {}) {
 	const isForm = typeof FormData !== 'undefined' && body instanceof FormData;
+	const token = getToken();
 	const res = await fetch(BASE + path, {
 		method,
 		headers: {
 			Accept: 'application/json',
 			...(body && !isForm ? { 'Content-Type': 'application/json' } : {}),
-			// ponytail: semua route BE di belakang auth:sanctum → token selalu nempel kalau ada.
-			...(token ? { Authorization: `Bearer ${token}` } : {}),
+			...(auth && token ? { Authorization: `Bearer ${token}` } : {}),
 			...headers
 		},
 		body: body ? (isForm ? (body as BodyInit) : JSON.stringify(body)) : undefined
@@ -63,24 +56,26 @@ export function mapUserToSession(u: Record<string, any>): User {
 		jabatan: (u.jabatan as string) ?? '',
 		departemen: (u.departemen as string) ?? '',
 		email: (u.email as string) ?? '',
-		peran: (u.role as Role) ?? 'karyawan'
-	};
+		peran: (u.role as Role) ?? 'karyawan',
+		id_karyawan: (u.id_karyawan as number | null) ?? null
+	} as User & { id_karyawan: number | null };
 }
 
-export type LoginResult = { token: string; token_type: string; user: Record<string, any> };
+export type LoginResult = { user: Record<string, any>; token: string; };
 
 export const login = (email: string, password: string): Promise<LoginResult> =>
 	apiFetch('/login', { method: 'POST', body: { email, password } }).then((x) => x.data as LoginResult);
 
-export const logout = () =>
-	apiFetch('/logout', { method: 'POST', auth: true }).then((x) => x.data);
+export const logout = () => apiFetch('/logout', { method: 'POST' }).then((x) => x.data);
 
-export const me = () => apiFetch('/me', { auth: true }).then((x) => x.data as Record<string, any>);
+export const me = () => apiFetch('/me').then((x) => x.data as Record<string, any>);
 
 export function mapPengajuanToTrip(p: Record<string, any>) {
 	return {
 		id: (p.nomor_pengajuan as string) ?? String(p.id_pengajuan),
-		karyawanId: (p.id_karyawan as number) ?? 1,
+		karyawanId: (p.id_karyawan as number) ?? 0,
+		karyawanNama: ((p.karyawan as any)?.nama_lengkap ?? '') as string,
+		karyawanNik: ((p.karyawan as any)?.nik ?? '') as string,
 		tujuan: ((p.tujuan as Record<string, string> | undefined)?.nama_tujuan ?? p.tujuan ?? '') as string,
 		kota: ((p.tujuan as Record<string, string> | undefined)?.kota ?? '') as string,
 		berangkat: p.tanggal_mulai as string,
@@ -109,7 +104,13 @@ export function mapPenggantianToReimb(g: Record<string, any>) {
 	};
 }
 function mapGantiStatus(s: string) {
-	return s === 'disetujui' || s === 'selesai' ? 'selesai' : s === 'ditolak' ? 'diverifikasi' : 'diajukan';
+	return s === 'disetujui' || s === 'selesai'
+		? 'selesai'
+		: s === 'ditolak'
+			? 'ditolak'
+			: s === 'diverifikasi'
+				? 'diverifikasi'
+				: 'diajukan';
 }
 
 export function mapVendorToFE(v: Record<string, any>): Vendor {
@@ -150,8 +151,10 @@ export function mapDelegasiToFE(d: Record<string, any>): Delegasi {
 		dari_tgl: (d.dari_tgl as string) ?? '',
 		sampai_tgl: (d.sampai_tgl as string) ?? '',
 		alasan: (d.alasan as string) ?? '',
-		aktif: Boolean(d.aktif ?? true)
-	};
+		aktif: Boolean(d.aktif ?? true),
+		id_pemberi: d.id_pemberi as number | undefined,
+		id_penerima: d.id_penerima as number | undefined
+	} as Delegasi & { id_pemberi?: number; id_penerima?: number };
 }
 
 export function mapItineraryToFE(it: Record<string, any>): ItineraryItem {
@@ -184,7 +187,8 @@ export function mapUangMukaToFE(um: Record<string, any>): UangMuka {
 		diajukan: Number(um.diajukan ?? 0),
 		disetujui: Number(um.disetujui ?? 0),
 		status: (um.status as FundStatus) ?? 'diajukan',
-		tanggal: (um.tanggal as string) ?? ''
+		tanggal: (um.tanggal as string) ?? '',
+		_raw: um
 	};
 }
 
@@ -193,7 +197,8 @@ export function mapSettlementToFE(s: Record<string, any>): Settlement {
 		id: String(s.id_settlement ?? s.id),
 		tripId: (s.nomor_pengajuan as string) ?? String(s.id_pengajuan ?? s.tripId ?? ''),
 		status: (s.status as Settlement['status']) ?? 'diajukan',
-		totalRealisasi: Number(s.total_realisasi ?? 0)
+		totalRealisasi: Number(s.total_realisasi ?? 0),
+		_raw: s
 	};
 }
 

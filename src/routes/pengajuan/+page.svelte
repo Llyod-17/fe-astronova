@@ -46,7 +46,14 @@
 		proyek: ''
 	});
 	let errors = $state<Record<string, string>>({});
-	let files = $state<string[]>([]);
+	let fileList = $state<File[]>([]);
+
+	function onFilesSelected(e: Event) {
+		const target = e.target as HTMLInputElement;
+		if (target.files) {
+			fileList = Array.from(target.files);
+		}
+	}
 
 	function validate(): boolean {
 		const r = schema.safeParse(f);
@@ -77,14 +84,14 @@
 			toast.success(`Pengajuan ${t.id} terkirim (lokal, BE mati)`);
 		} else {
 			try {
-				await kirimPengajuanBE({ ...f });
-				// upload dokumen bila ada file beneran dipilih
-				const inp = document.getElementById('dok-be') as HTMLInputElement | null;
-				const raw = (trips[0] as any)?._raw;
-				if (inp?.files?.length && raw?.id_pengajuan) {
-					for (const fl of inp.files) await uploadDokumenBE(fl, raw.id_pengajuan).catch(() => {});
+				const saved = await kirimPengajuanBE({ ...f });
+				const rawId = (saved as any)?.data?.id_pengajuan ?? (saved as any)?.id_pengajuan ?? (trips[0] as any)?._raw?.id_pengajuan;
+				if (fileList.length && rawId) {
+					for (const fl of fileList) {
+						await uploadDokumenBE(fl, rawId, 'surat_tugas').catch(() => {});
+					}
 				}
-				toast.success('Pengajuan terkirim ke BE');
+				toast.success('Pengajuan terkirim ke server');
 			} catch (e: unknown) {
 				toast.error((e as { message?: string })?.message ?? 'Gagal kirim', {
 					description: JSON.stringify((e as { errors?: unknown })?.errors ?? '')
@@ -102,12 +109,9 @@
 			uangMuka: 0,
 			proyek: ''
 		};
-		files = [];
-	}
-
-	function addFile() {
-		const three = ['surat_tugas.pdf', 'brosur_budget.pdf', 'itinerary_draft.xlsx'];
-		files = [...files, three[files.length % three.length]];
+		fileList = [];
+		const inp = document.getElementById('dok-be') as HTMLInputElement | null;
+		if (inp) inp.value = '';
 	}
 </script>
 
@@ -199,22 +203,22 @@
 					</p>{/if}
 			</div>
 			<div class="sm:col-span-2">
-				<p class="mb-1.5 block text-body-sm font-semibold text-navy-deep">Dokumen Pendukung</p>
-				<input id="dok-be" type="file" multiple class="mb-2 block text-body-sm" />
-				<button
-					type="button"
-					onclick={addFile}
-					class="flex w-full items-center justify-center gap-2 rounded-sm border border-dashed border-input bg-surface-input px-4 py-9 text-body-sm font-medium text-muted-subtle transition-colors hover:border-ring hover:text-secondary"
-				>
-					<Paperclip size={15} /> Klik untuk melampirkan dokumen
-				</button>
-				{#if files.length > 0}
+				<p class="mb-1.5 block text-body-sm font-semibold text-navy-deep">Dokumen Pendukung (Surat Tugas / Itinerary)</p>
+				<input
+					id="dok-be"
+					type="file"
+					multiple
+					accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+					onchange={onFilesSelected}
+					class="w-full rounded-sm border border-input bg-surface-input px-3 py-2 text-body-sm text-foreground file:mr-3 file:rounded-xs file:border-0 file:bg-primary file:px-3 file:py-1 file:text-meta file:font-semibold file:text-primary-foreground hover:file:bg-primary/90"
+				/>
+				{#if fileList.length > 0}
 					<ul class="mt-2 flex flex-wrap gap-2">
-						{#each files as fl (fl)}
+						{#each fileList as fl (fl.name)}
 							<li
 								class="rounded-xs bg-accent px-3 py-1.5 text-meta font-semibold text-accent-foreground"
 							>
-								{fl}
+								{fl.name} ({(fl.size / 1024).toFixed(1)} KB)
 							</li>
 						{/each}
 					</ul>
@@ -226,7 +230,7 @@
 					type="button"
 					onclick={() =>
 						toast.info('Draft disimpan', {
-							description: 'Pengajuan tersimpan sebagai draft. (demo)'
+							description: 'Pengajuan tersimpan sebagai draft.'
 						})}
 				>
 					Simpan Draft

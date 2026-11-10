@@ -8,14 +8,17 @@ export interface User {
 	departemen: string;
 	email: string;
 	peran: Role;
+	id_karyawan?: number | null;
 }
 
 export type TripStatus =
-	'draft' | 'menunggu_persetujuan' | 'disetujui' | 'berlangsung' | 'selesai' | 'ditolak';
+	'draft' | 'menunggu_persetujuan' | 'disetujui' | 'berlangsung' | 'selesai' | 'ditolak' | 'revisi';
 
 export interface Trip {
 	id: string;
 	karyawanId: number;
+	karyawanNama?: string;
+	karyawanNik?: string;
 	tujuan: string;
 	kota: string;
 	berangkat: string;
@@ -58,6 +61,7 @@ export interface UangMuka {
 	disetujui: number;
 	status: FundStatus;
 	tanggal: string;
+	_raw?: any;
 }
 
 export interface Reimbursement {
@@ -75,6 +79,7 @@ export interface Settlement {
 	tripId: string;
 	status: 'diajukan' | 'diverifikasi' | 'selesai';
 	totalRealisasi: number;
+	_raw?: any;
 }
 
 export interface Vendor {

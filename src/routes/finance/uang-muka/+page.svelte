@@ -5,8 +5,14 @@
 	import Table from '$lib/components/ui/table.svelte';
 	import Button from '$lib/components/ui/button.svelte';
 	import StatusBadge from '$lib/components/app/status-badge.svelte';
-	import { cairkanDana, dana, trips } from '$lib/state.svelte';
+	import { cairkanDana, dana, trips, loadDana, loadTrips } from '$lib/state.svelte';
 	import { dateId, rupiah } from '$lib/format';
+	import { onMount } from 'svelte';
+
+	onMount(async () => {
+		await loadTrips();
+		await loadDana();
+	});
 
 	const rows = $derived(dana.map((d) => ({ ...d, t: trips.find((x) => x.id === d.tripId) })));
 </script>

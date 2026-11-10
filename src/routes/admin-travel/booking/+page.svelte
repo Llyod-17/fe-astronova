@@ -8,9 +8,16 @@
 	import Button from '$lib/components/ui/button.svelte';
 	import Table from '$lib/components/ui/table.svelte';
 	import StatusBadge from '$lib/components/app/status-badge.svelte';
-	import { addBooking, bookings, trips, vendors } from '$lib/state.svelte';
+	import { addBooking, bookings, trips, vendors, loadBookings, loadTrips, loadVendors } from '$lib/state.svelte';
 	import { dateId, rupiah } from '$lib/format';
 	import { z } from 'zod';
+	import { onMount } from 'svelte';
+
+	onMount(async () => {
+		await loadTrips();
+		await loadBookings();
+		await loadVendors();
+	});
 
 	const schema = z.object({
 		tripId: z.string().min(1, 'Pilih perjalanan'),
@@ -28,7 +35,7 @@
 		trips.filter((t) => t.status === 'disetujui' || t.status === 'berlangsung')
 	);
 
-	function submit() {
+	async function submit() {
 		const r = schema.safeParse(f);
 		if (!r.success) {
 			const e: Record<string, string> = {};
@@ -37,18 +44,22 @@
 			errors = e;
 			return;
 		}
-		const b = addBooking({
-			tripId: f.tripId,
-			jenis: f.jenis as 'Tiket Pesawat',
-			detail: f.detail,
-			nomorRef: f.nomorRef,
-			vendor: f.vendor,
-			harga: f.harga,
-			status: 'pending'
-		});
-		toast.success(`Booking ${b.id} dibuat`, { description: 'Menunggu konfirmasi vendor.' });
-		f = { tripId: '', jenis: '', detail: '', nomorRef: '', vendor: '', harga: 0 };
-		errors = {};
+		try {
+			const b = await addBooking({
+				tripId: f.tripId,
+				jenis: f.jenis as 'Tiket Pesawat',
+				detail: f.detail,
+				nomorRef: f.nomorRef,
+				vendor: f.vendor,
+				harga: f.harga,
+				status: 'pending'
+			});
+			toast.success(`Booking ${b.id} dibuat`, { description: 'Tersimpan di server.' });
+			f = { tripId: '', jenis: '', detail: '', nomorRef: '', vendor: '', harga: 0 };
+			errors = {};
+		} catch (e: unknown) {
+			toast.error((e as any)?.message ?? 'Gagal membuat booking');
+		}
 	}
 </script>
 

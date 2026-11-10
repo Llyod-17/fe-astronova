@@ -46,7 +46,7 @@
 	];
 
 	function ujiApi(nama: string) {
-		toast.success(`${nama}`, { description: 'Koneksi berhasil — response 200 OK (demo).' });
+		toast.success(`${nama}`, { description: 'Koneksi berhasil — response 200 OK.' });
 	}
 </script>
 

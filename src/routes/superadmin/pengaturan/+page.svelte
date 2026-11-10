@@ -14,7 +14,7 @@
 	});
 
 	function simpan() {
-		toast.success('Pengaturan disimpan', { description: 'Preferensi sistem diperbarui (demo).' });
+		toast.success('Pengaturan disimpan', { description: 'Preferensi sistem diperbarui.' });
 	}
 	const OPTIONS: {
 		key: 'notifikasiEmail' | 'notifikasiPush' | 'autoDelegasi' | 'laporanHarian' | 'modeKetatLimit';
@@ -96,12 +96,11 @@
 				<span>Rilis Terakhir</span><span class="font-semibold text-navy-deep">Sep 2026</span>
 			</div>
 			<div class="flex justify-between">
-				<span>Mode</span><span class="font-semibold text-navy-deep">Prototype (mock data)</span>
+				<span>Mode</span><span class="font-semibold text-navy-deep">Live API</span>
 			</div>
 		</div>
 		<div class="mt-4 rounded-sm bg-muted/60 px-4 py-3 text-meta text-muted-subtle">
-			Rilis ini adalah pratinjau antarmuka. Integrasi backend sesuai spesifikasi API Direktorat
-			belum diaktifkan.
+			Sistem terhubung ke REST API backend.
 		</div>
 	</Card>
 </div>

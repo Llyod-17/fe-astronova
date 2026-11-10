@@ -11,10 +11,22 @@
 		verifikasiSettlement,
 		tuntaskanSettlement,
 		uangMukaTrip,
-		realisasiTrip
+		realisasiTrip,
+		loadSettlements,
+		loadTrips,
+		loadDana,
+		loadReimbursements
 	} from '$lib/state.svelte';
 	import { rupiah } from '$lib/format';
 	import { arahPembayaran } from '$lib/settlement';
+	import { onMount } from 'svelte';
+
+	onMount(async () => {
+		await loadTrips();
+		await loadDana();
+		await loadReimbursements();
+		await loadSettlements();
+	});
 
 	const rows = $derived(
 		settlements.map((s) => {

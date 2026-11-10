@@ -8,7 +8,8 @@ const TRIP_LABEL: Record<TripStatus, string> = {
 	disetujui: 'Disetujui',
 	berlangsung: 'Berlangsung',
 	selesai: 'Selesai',
-	ditolak: 'Ditolak'
+	ditolak: 'Ditolak',
+	revisi: 'Diminta Revisi'
 };
 
 export function tripTone(s: TripStatus): BadgeTone {

@@ -1,25 +1,13 @@
 import { toast } from 'svelte-sonner';
 import { todayIso } from './format';
-import { create, list, listAll, mapLogToAudit, mapPengajuanToTrip, mapPenggantianToReimb, mapUserToSession, approve, reject, patchStatus, uploadBukti, uploadDokumen, apiFetch, getToken, setToken, login as apiLogin, logout as apiLogout, me as apiMe } from './api';
-import {
-	BOOKINGS,
-	DANA,
-	DESTINASI,
-	DEPARTMENTS,
-	ITINERARY,
-	KATEGORI,
-	NOTIF,
-	POLICIES,
-	PROYEKS,
-	REIMBURSEMENTS,
-	SETTLEMENTS,
-	TRIPS,
-	VENDORS,
-	userByRole
-} from './data/mock';
+import { create, update, list, listAll, mapLogToAudit, mapPengajuanToTrip, mapPenggantianToReimb, mapUserToSession, mapBookingToFE, cairkanUangMukaBE, updateSettlementStatusBE, approve, reject, patchStatus, uploadBukti, uploadDokumen, apiFetch, getToken, setToken, login as apiLogin, logout as apiLogout, me as apiMe } from './api';
 import type {
 	Booking,
+	Dept,
 	ItineraryItem,
+	MCategory,
+	MDestination,
+	MProject,
 	Notif,
 	Policy,
 	Role,
@@ -31,9 +19,19 @@ import type {
 	Vendor
 } from './types';
 
+const EMPTY_USER: User = {
+	id: 0,
+	nama: '',
+	nik: '',
+	jabatan: '',
+	departemen: '',
+	email: '',
+	peran: 'karyawan'
+};
+
 export const session = $state({
 	role: 'karyawan' as Role,
-	user: userByRole('karyawan'),
+	user: { ...EMPTY_USER },
 	authed: false
 });
 
@@ -80,23 +78,23 @@ export async function doLogout() {
 	}
 	setToken(null);
 	session.authed = false;
-	session.user = userByRole('karyawan');
+	session.user = { ...EMPTY_USER };
 	session.role = 'karyawan';
 }
 
-export const trips: Trip[] = $state([...TRIPS]);
-export const bookings: Booking[] = $state([...BOOKINGS]);
-export const itinerary: ItineraryItem[] = $state([...ITINERARY]);
-export const dana: UangMuka[] = $state([...DANA]);
-export const reimbursements: Reimbursement[] = $state([...REIMBURSEMENTS]);
-export const settlements: Settlement[] = $state([...SETTLEMENTS]);
-export const vendors: Vendor[] = $state([...VENDORS]);
-export const policies: Policy[] = $state([...POLICIES]);
-export const notifications: Notif[] = $state([...NOTIF]);
-export const departments = $state([...DEPARTMENTS]);
-export const kategori = $state([...KATEGORI]);
-export const proyeks = $state([...PROYEKS]);
-export const destinasi = $state([...DESTINASI]);
+export const trips: Trip[] = $state([]);
+export const bookings: Booking[] = $state([]);
+export const itinerary: ItineraryItem[] = $state([]);
+export const dana: UangMuka[] = $state([]);
+export const reimbursements: Reimbursement[] = $state([]);
+export const settlements: Settlement[] = $state([]);
+export const vendors: Vendor[] = $state([]);
+export const policies: Policy[] = $state([]);
+export const notifications: Notif[] = $state([]);
+export const departments: Dept[] = $state([]);
+export const kategori: MCategory[] = $state([]);
+export const proyeks: MProject[] = $state([]);
+export const destinasi: MDestination[] = $state([]);
 
 export function addTrip(t: Omit<Trip, 'id' | 'status' | 'level'>) {
 	const n = trips.length + 1;
@@ -134,33 +132,26 @@ export function setBookingStatus(id: string, status: Booking['status']) {
 	}
 }
 
-export function addBooking(b: Omit<Booking, 'id'>): Booking {
-	const nb = { id: `BK-2026-${String(bookings.length + 1).padStart(3, '0')}`, ...b };
-	bookings.unshift(nb);
-
-	// ponytail: kirim ke BE jika pengajuan terdaftar
+export async function addBooking(b: Omit<Booking, 'id'>): Promise<Booking> {
 	const t = trips.find((x) => x.id === b.tripId);
 	const rawId = (t as any)?._raw?.id_pengajuan;
-	if (rawId) {
-		import('./api').then(({ create, mapBookingToFE }) =>
-			create('booking', {
-				id_pengajuan: rawId,
-				jenis: b.jenis,
-				detail: b.detail,
-				nomor_ref: b.nomorRef,
-				vendor: b.vendor,
-				harga: b.harga,
-				status: b.status ?? 'pending'
-			}).then((raw) => {
-				// ganti placeholder dengan data BE
-				const idx = bookings.findIndex((bk) => bk.id === nb.id);
-				if (idx >= 0) {
-					bookings[idx] = mapBookingToFE(raw);
-				}
-			})
-		).catch(() => {});
+	if (be.live && rawId) {
+		const raw = await create('booking', {
+			id_pengajuan: rawId,
+			jenis: b.jenis,
+			detail: b.detail,
+			nomor_ref: b.nomorRef,
+			vendor: b.vendor,
+			harga: b.harga,
+			status: b.status ?? 'pending'
+		});
+		await loadBookings();
+		const mapped = mapBookingToFE((raw as any)?.data ?? raw);
+		return mapped;
 	}
 
+	const nb = { id: `BK-2026-${String(bookings.length + 1).padStart(3, '0')}`, ...b };
+	bookings.unshift(nb);
 	return nb;
 }
 
@@ -171,7 +162,20 @@ export function reorderItinerary(tripId: string, items: ItineraryItem[]) {
 	itinerary.push(...others, ...mine);
 }
 
-export function ajukanUangMuka(tripId: string, jumlah: number) {
+export async function ajukanUangMuka(tripId: string, jumlah: number) {
+	const t = trips.find((x) => x.id === tripId);
+	const rawId = (t as any)?._raw?.id_pengajuan;
+	if (be.live && rawId) {
+		await create('uang-muka', {
+			id_pengajuan: rawId,
+			diajukan: jumlah,
+			status: 'diajukan',
+			tanggal: todayIso()
+		});
+		await loadDana();
+		toast.success('Uang muka diajukan', { description: 'Tercatat di backend untuk Finance.' });
+		return;
+	}
 	dana.unshift({
 		id: `UM-${String(dana.length + 1).padStart(3, '0')}`,
 		tripId,
@@ -194,8 +198,27 @@ export function ajukanReimbursement(r: Omit<Reimbursement, 'id' | 'status'>) {
 	});
 }
 
-export function submitSettlement(tripId: string) {
+export async function submitSettlement(tripId: string) {
+	const t = trips.find((x) => x.id === tripId);
+	const rawId = (t as any)?._raw?.id_pengajuan;
 	const total = reimbursements.filter((r) => r.tripId === tripId).reduce((a, r) => a + r.jumlah, 0);
+
+	if (be.live && rawId) {
+		try {
+			await create('settlement', {
+				id_pengajuan: rawId,
+				status: 'diajukan',
+				total_realisasi: total
+			});
+			await loadSettlements();
+			toast.success('Settlement diajukan ke Finance');
+			return;
+		} catch (e: unknown) {
+			toast.error((e as any)?.message ?? 'Gagal submit settlement ke BE');
+			return;
+		}
+	}
+
 	settlements.unshift({
 		id: `STL-${String(settlements.length + 1).padStart(3, '0')}`,
 		tripId,
@@ -217,12 +240,20 @@ export function uangMukaTrip(tripId: string): number {
 		.reduce((a, d) => a + d.disetujui, 0);
 }
 
-export function cairkanDana(id: string) {
+export async function cairkanDana(id: string) {
 	const d = dana.find((x) => x.id === id);
 	if (d) {
 		d.status = 'dicairkan';
 		d.disetujui = d.diajukan;
-		import('./api').then((m) => m.cairkanUangMukaBE(id)).catch(() => {});
+		const rawId = (d as any)?._raw?.id_uang_muka ?? id;
+		if (be.live) {
+			try {
+				await cairkanUangMukaBE(rawId);
+				await loadDana();
+			} catch (e) {
+				console.error('Gagal mencairkan uang muka di BE:', e);
+			}
+		}
 		toast.success(`Dana ${id} dicairkan`, {
 			description: 'Notifikasi terkirim ke karyawan & atasan.'
 		});
@@ -246,20 +277,36 @@ export function bayarReimbursement(id: string) {
 	}
 }
 
-export function verifikasiSettlement(id: string) {
+export async function verifikasiSettlement(id: string) {
 	const s = settlements.find((x) => x.id === id);
 	if (s) {
 		s.status = 'diverifikasi';
-		import('./api').then((m) => m.updateSettlementStatusBE(id, 'diverifikasi')).catch(() => {});
+		const rawId = (s as any)?._raw?.id_settlement ?? id;
+		if (be.live) {
+			try {
+				await updateSettlementStatusBE(rawId, 'diverifikasi');
+				await loadSettlements();
+			} catch (e) {
+				console.error('Gagal verifikasi settlement di BE:', e);
+			}
+		}
 		toast.success(`Settlement ${id} diverifikasi`, { description: 'Siap masuk alur pembayaran.' });
 	}
 }
 
-export function tuntaskanSettlement(id: string) {
+export async function tuntaskanSettlement(id: string) {
 	const s = settlements.find((x) => x.id === id);
 	if (s) {
 		s.status = 'selesai';
-		import('./api').then((m) => m.updateSettlementStatusBE(id, 'selesai')).catch(() => {});
+		const rawId = (s as any)?._raw?.id_settlement ?? id;
+		if (be.live) {
+			try {
+				await updateSettlementStatusBE(rawId, 'selesai');
+				await loadSettlements();
+			} catch (e) {
+				console.error('Gagal tuntaskan settlement di BE:', e);
+			}
+		}
 		toast.success(`Settlement ${id} selesai`, {
 			description: 'Perjalanan dikunci dari perubahan lanjut.'
 		});
@@ -308,7 +355,7 @@ export function tripById(id: string): Trip | undefined {
 }
 
 export function namaByKaryawan(id: number): string {
-	return userByRole('karyawan').id === id ? userByRole('karyawan').nama : `Karyawan #${id}`;
+	return session.user.id === id ? session.user.nama : `Karyawan #${id}`;
 }
 
 // BE live loaders — mock tetap fallback bila BE mati. ponytail: no store baru, timpa $state lama.
@@ -546,7 +593,25 @@ export async function kirimPengajuanBE(f: {
 		details: [{ id_kategori: idKategoriOf('Transportasi'), estimasi_biaya: f.anggaran, keterangan: f.keperluan }]
 	};
 	const saved = await create('pengajuan-perjalanan', body);
+	const rawId = (saved as any)?.data?.id_pengajuan ?? (saved as any)?.id_pengajuan;
+
+	if (rawId) {
+		// Flowchart A5: Submit Pengajuan (menunggu_persetujuan)
+		await patchStatus('pengajuan-perjalanan', rawId, 'menunggu_persetujuan').catch(() => {});
+
+		// Flowchart A4 & S3 C2: Buat permohonan uang muka jika ada
+		if (f.uangMuka > 0) {
+			await create('uang-muka', {
+				id_pengajuan: rawId,
+				diajukan: f.uangMuka,
+				status: 'diajukan',
+				tanggal: f.berangkat || todayIso()
+			}).catch(() => {});
+		}
+	}
+
 	await loadTrips();
+	await loadDana();
 	return saved;
 }
 
@@ -578,30 +643,76 @@ export async function tolakBE(tripId: string, catatan: string) {
 }
 
 // tulis: reimbursement -> penggantian BE (cari id_pengajuan dari nomor trip)
-export async function ajukanGantiBE(r: { tripId: string; kategori: string; deskripsi: string; jumlah: number; bukti?: string }) {
+export async function ajukanGantiBE(r: { tripId: string; kategori: string; deskripsi: string; jumlah: number; bukti?: File | null }) {
 	const raw = (trips.find((t) => t.id === r.tripId) as any)?._raw;
 	const nid = raw?.id_pengajuan;
-	const body = {
-		id_pengajuan: nid ?? 3,
-		tanggal_pengajuan: todayIso(),
-		catatan: r.deskripsi,
-		details: [
-			{
-				id_kategori: idKategoriOf(r.kategori),
-				tanggal_pengeluaran: todayIso(),
-				deskripsi: r.deskripsi,
-				jumlah: r.jumlah,
-				...(r.bukti ? { bukti_file: r.bukti } : {})
-			}
-		]
-	};
-	try {
-		await create('pengajuan-penggantian', body);
-		await loadReimbursements();
-		toast.success('Reimbursement diajukan');
-	} catch {
-		ajukanReimbursement({ tripId: r.tripId, kategori: r.kategori, deskripsi: r.deskripsi, jumlah: r.jumlah, bukti: r.bukti ?? '' });
+	if (!nid) {
+		throw new Error('Trip belum tersinkron dengan backend');
 	}
+
+	// 1. Simpan pengeluaran riil (Flowchart S4: D2 Catat Pengeluaran Riil)
+	const pengeluaranRes = await create('pengeluaran-perjalanan', {
+		id_pengajuan: nid,
+		id_kategori: idKategoriOf(r.kategori),
+		tanggal_pengeluaran: todayIso(),
+		deskripsi: r.deskripsi,
+		jumlah: r.jumlah,
+		metode_pembayaran: 'Cash',
+		sudah_diganti: false
+	});
+
+	const pengeluaran = (pengeluaranRes as any)?.data ?? pengeluaranRes;
+	const idPengeluaran = pengeluaran?.id_pengeluaran;
+
+	// 2. Unggah file struk riil jika ada (Flowchart S4: D3 Unggah Foto Kuitansi / Struk)
+	let fileName: string | undefined = r.bukti?.name;
+	if (r.bukti && idPengeluaran) {
+		try {
+			const resStruk = await uploadBuktiBE(r.bukti, idPengeluaran);
+			const strukData = (resStruk as any)?.data ?? resStruk;
+			fileName = strukData?.nama_asli ?? r.bukti.name;
+		} catch (errUpload) {
+			console.error('Upload bukti struk gagal:', errUpload);
+		}
+	}
+
+	// 3. Simpan / Sinkron ke Pengajuan Penggantian (Flowchart S5: E2 Hitung Selisih Otomatis)
+	const detailItem = {
+		id_kategori: idKategoriOf(r.kategori),
+		tanggal_pengeluaran: todayIso(),
+		deskripsi: r.deskripsi,
+		jumlah: r.jumlah,
+		...(fileName ? { bukti_file: fileName } : {})
+	};
+
+	const existing = reimbursements.find((rb) => rb.tripId === r.tripId);
+	const existingRawId = (existing as any)?._raw?.id_penggantian;
+
+	if (existingRawId) {
+		const oldDetails = (existing as any)?._raw?.details?.map((d: any) => ({
+			id_kategori: d.id_kategori,
+			tanggal_pengeluaran: d.tanggal_pengeluaran,
+			deskripsi: d.deskripsi,
+			jumlah: d.jumlah,
+			bukti_file: d.bukti_file
+		})) ?? [];
+		await update('pengajuan-penggantian', existingRawId, {
+			id_pengajuan: nid,
+			tanggal_pengajuan: todayIso(),
+			catatan: r.deskripsi,
+			details: [...oldDetails, detailItem]
+		});
+	} else {
+		await create('pengajuan-penggantian', {
+			id_pengajuan: nid,
+			tanggal_pengajuan: todayIso(),
+			catatan: r.deskripsi,
+			details: [detailItem]
+		});
+	}
+
+	await loadReimbursements();
+	toast.success('Pengeluaran & bukti struk berhasil dicatat ke sistem');
 }
 
 export async function uploadBuktiBE(file: File, idPengeluaran: number) {

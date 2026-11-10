@@ -5,36 +5,54 @@
 	import Card from '$lib/components/ui/card.svelte';
 	import Input from '$lib/components/ui/input.svelte';
 	import Button from '$lib/components/ui/button.svelte';
-	import { DELEGASI_ACTIVE, USERS } from '$lib/data/mock';
-	import { delegasiList, be, session } from '$lib/state.svelte';
+	import { delegasiList, penggunaList, be, session, loadDelegasi, loadPengguna } from '$lib/state.svelte';
 	import { create } from '$lib/api';
+	import { onMount } from 'svelte';
 
-	const activeDelegasi = $derived(be.live && delegasiList.length ? delegasiList.find((d: any) => d.aktif) : null);
+	onMount(async () => {
+		await loadPengguna();
+		await loadDelegasi();
+	});
 
-	let delegasi = $state({ ...DELEGASI_ACTIVE });
-	let enable = $state(true);
+	const activeDelegasi = $derived(delegasiList.find((d: any) => d.aktif) ?? null);
+
+	let delegasi = $state({
+		dari: session.user.nama || 'Atasan',
+		kepada: '',
+		id_penerima: null as number | null,
+		dari_tgl: '',
+		sampai_tgl: '',
+		alasan: ''
+	});
+	let enable = $state(false);
 
 	const kandidat = $derived(
-		be.live && delegasiList.length
-			? delegasiList.map((d: any) => ({ id: d.id, nama: d.kepada, jabatan: '' })).slice(0, 4)
-			: USERS.filter((u) => u.id === 3 || u.id === 2)
+		penggunaList.length > 0
+			? penggunaList
+					.filter((u: any) => u.id !== session.user.id)
+					.map((u: any) => ({ id: u.id, nama: u.nama, jabatan: u.jabatan }))
+					.slice(0, 4)
+			: delegasiList.map((d: any) => ({ id: d.id, nama: d.kepada, jabatan: '' })).slice(0, 4)
 	);
 
 	async function simpan() {
 		try {
 			await create('delegasi', {
-				id_penerima: delegasiList.find((d: any) => d.kepada === delegasi.kepada)?.id_penerima ?? undefined,
+				id_penerima: delegasi.id_penerima ?? kandidat[0]?.id,
 				dari_tgl: delegasi.dari_tgl,
 				sampai_tgl: delegasi.sampai_tgl,
 				alasan: delegasi.alasan,
 				aktif: enable
 			});
-		} catch {}
-		toast.success(enable ? 'Delegasi aktif' : 'Delegasi dinonaktifkan', {
-			description: enable
-				? `${delegasi.dari} → ${delegasi.kepada} hingga ${delegasi.sampai_tgl}.`
-				: 'Persetujuan kembali ke atasan langsung.'
-		});
+			await loadDelegasi();
+			toast.success(enable ? 'Delegasi aktif' : 'Delegasi dinonaktifkan', {
+				description: enable
+					? `${delegasi.dari} → ${delegasi.kepada} hingga ${delegasi.sampai_tgl}.`
+					: 'Persetujuan kembali ke atasan langsung.'
+			});
+		} catch (e: unknown) {
+			toast.error((e as any)?.message ?? 'Gagal menyimpan delegasi ke server');
+		}
 	}
 
 	const shown = $derived(activeDelegasi ?? delegasi);
@@ -59,7 +77,10 @@
 					{#each kandidat as u (u.id)}
 						<button
 							type="button"
-							onclick={() => (delegasi.kepada = u.nama)}
+							onclick={() => {
+								delegasi.kepada = u.nama;
+								delegasi.id_penerima = u.id;
+							}}
 							class="rounded-sm border px-3 py-2.5 text-left text-body-sm font-semibold transition-colors {delegasi.kepada ===
 							u.nama
 								? 'border-ring bg-accent text-navy-deep'

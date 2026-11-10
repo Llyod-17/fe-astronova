@@ -27,7 +27,14 @@
 	type F = z.infer<typeof schema>;
 	let f: F = $state({ tripId: '', kategori: '', deskripsi: '', jumlah: 0 });
 	let errors = $state<Record<string, string>>({});
-	let bukti = $state('nota_taxi_bandara.jpg');
+	let bukti = $state<File | null>(null);
+
+	function onFileChange(e: Event) {
+		const target = e.target as HTMLInputElement;
+		if (target.files && target.files.length > 0) {
+			bukti = target.files[0];
+		}
+	}
 
 	const tripsFin = $derived(
 		trips.filter(
@@ -35,7 +42,7 @@
 		)
 	);
 
-	function submit() {
+	async function submit() {
 		const r = schema.safeParse(f);
 		if (!r.success) {
 			const e: Record<string, string> = {};
@@ -44,17 +51,26 @@
 			errors = e;
 			return;
 		}
-		if (be.live) ajukanGantiBE({ ...f, bukti });
-		else
-			ajukanReimbursement({
-				tripId: f.tripId,
-				kategori: f.kategori,
-				deskripsi: f.deskripsi,
-				jumlah: f.jumlah,
-				bukti
-			});
-		f = { tripId: '', kategori: '', deskripsi: '', jumlah: 0 };
-		errors = {};
+		if (!bukti) {
+			toast.error('Pilih file struk sebelum mengajukan reimbursement');
+			return;
+		}
+
+		if (!be.live) {
+			toast.error('Backend tidak aktif. Reimbursement real tidak dapat disimpan.');
+			return;
+		}
+
+		try {
+			await ajukanGantiBE({ ...f, bukti });
+			f = { tripId: '', kategori: '', deskripsi: '', jumlah: 0 };
+			bukti = null;
+			errors = {};
+			const input = document.querySelector<HTMLInputElement>('input[type="file"]');
+			if (input) input.value = '';
+		} catch (e: unknown) {
+			toast.error((e as { message?: string })?.message ?? 'Gagal mengajukan reimbursement');
+		}
 	}
 </script>
 
@@ -121,19 +137,16 @@
 					</p>{/if}
 			</div>
 			<div>
-				<p class="mb-1.5 block text-body-sm font-semibold text-navy-deep">Bukti Pembayaran</p>
-				<button
-					type="button"
-					onclick={() => {
-						bukti = ['nota_taxi.jpg', 'invoice_hotel.pdf', 'struk_makan.png'][
-							Math.floor(Math.random() * 3)
-						];
-						toast.info('Bukti lampirkan (demo)', { description: `File: ${bukti}` });
-					}}
-					class="w-full rounded-sm border border-dashed border-input bg-surface-input px-4 py-6 text-meta font-medium text-muted-subtle transition-colors hover:border-ring hover:text-secondary"
-				>
-					Lampirkan bukti — {bukti}
-				</button>
+				<p class="mb-1.5 block text-body-sm font-semibold text-navy-deep">Bukti Pembayaran (File Struk / Nota)</p>
+				<input
+					type="file"
+					accept="image/jpeg,image/png,image/jpg,application/pdf"
+					onchange={onFileChange}
+					class="w-full rounded-sm border border-input bg-surface-input px-3 py-2 text-body-sm text-foreground file:mr-3 file:rounded-xs file:border-0 file:bg-primary file:px-3 file:py-1 file:text-meta file:font-semibold file:text-primary-foreground hover:file:bg-primary/90"
+				/>
+				{#if bukti}
+					<p class="mt-1 text-meta font-medium text-emerald-600">Terpilih: {bukti.name} ({(bukti.size / 1024).toFixed(1)} KB)</p>
+				{/if}
 			</div>
 			<div class="flex justify-end">
 				<Button type="submit"><ReceiptText size={15} /> Ajukan Klaim</Button>

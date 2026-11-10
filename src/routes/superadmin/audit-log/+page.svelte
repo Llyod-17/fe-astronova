@@ -4,12 +4,11 @@
 	import Card from '$lib/components/ui/card.svelte';
 	import Table from '$lib/components/ui/table.svelte';
 	import Badge from '$lib/components/ui/badge.svelte';
-	import { AUDIT_LOG } from '$lib/data/mock';
 	import { dateTimeId } from '$lib/format';
-	import { auditLive, be, loadAuditLive } from '$lib/state.svelte';
+	import { auditLive, loadAuditLive } from '$lib/state.svelte';
 	import { onMount } from 'svelte';
 	onMount(loadAuditLive);
-	const rows = $derived(be.live && auditLive.rows.length ? auditLive.rows : AUDIT_LOG);
+	const rows = $derived(auditLive.rows);
 </script>
 
 <svelte:head><title>Audit Log — Astronova</title></svelte:head>
@@ -28,7 +27,7 @@
 				><ScrollText size={16} /></span
 			>
 			<p class="font-heading text-heading-sm font-medium text-navy-deep">
-				Log Aktivitas ({rows.length} entri){be.live ? ' — live BE' : ' — data contoh'}
+				Log Aktivitas ({rows.length} entri)
 			</p>
 		</div>
 		<div class="px-6 pt-4 pb-6">

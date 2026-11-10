@@ -10,10 +10,22 @@
 		trips,
 		submitSettlement,
 		uangMukaTrip,
-		realisasiTrip
+		realisasiTrip,
+		loadSettlements,
+		loadTrips,
+		loadDana,
+		loadReimbursements
 	} from '$lib/state.svelte';
 	import { rupiah } from '$lib/format';
 	import { hitungSelisih } from '$lib/settlement';
+	import { onMount } from 'svelte';
+
+	onMount(async () => {
+		await loadTrips();
+		await loadDana();
+		await loadReimbursements();
+		await loadSettlements();
+	});
 
 	const activeTrip = $derived(
 		trips.find(
