@@ -55,6 +55,16 @@
 		}
 	}
 
+	function onDestinasiChange(e: Event) {
+		const target = e.target as HTMLSelectElement;
+		const val = target.value;
+		const found = destinasi.find((d) => d.nama === val || d.kota === val);
+		if (found) {
+			f.tujuan = found.nama;
+			f.kota = found.kota;
+		}
+	}
+
 	function validate(): boolean {
 		const r = schema.safeParse(f);
 		if (!r.success) {
@@ -144,7 +154,12 @@
 					</p>{/if}
 			</div>
 			<div>
-				<Input label="Kota Tujuan" bind:value={f.kota} placeholder="Cth: Surabaya" />
+				<Sel label="Kota Tujuan" bind:value={f.kota} onchange={onDestinasiChange}>
+					<option value="">Pilih kota tujuan…</option>
+					{#each destinasi as d (d.id)}
+						<option value={d.kota}>{d.kota} ({d.nama})</option>
+					{/each}
+				</Sel>
 				{#if errOf('kota')}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errOf('kota')}
 					</p>{/if}
@@ -171,8 +186,8 @@
 						{errOf('keperluan')}
 					</p>{/if}
 			</div>
-			<div>
-				<Sel label="Proyek" bind:value={f.proyek}>
+			<div class="sm:col-span-2">
+				<Sel label="Proyek Terkait" bind:value={f.proyek}>
 					<option value="">Pilih proyek…</option>
 					{#each proyeks as p (p.id)}
 						<option value={p.nama}>{p.nama} ({p.kode})</option>
@@ -181,14 +196,6 @@
 				{#if errOf('proyek')}<p class="mt-1.5 text-meta font-medium text-destructive">
 						{errOf('proyek')}
 					</p>{/if}
-			</div>
-			<div>
-				<Sel label="Destinasi BE" bind:value={f.tujuan}>
-					<option value="">— samakan dengan tujuan —</option>
-					{#each destinasi as d (d.id)}
-						<option value={d.nama}>{d.nama} — {d.kota}</option>
-					{/each}
-				</Sel>
 			</div>
 			<div>
 				<Input label="Estimasi Biaya (Rp)" type="number" min="0" bind:value={f.anggaran} />
